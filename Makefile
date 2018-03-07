@@ -6,7 +6,7 @@
 #    By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/11 18:07:15 by mmerabet          #+#    #+#              #
-#    Updated: 2018/03/01 19:20:16 by mmerabet         ###   ########.fr        #
+#    Updated: 2018/03/07 20:28:43 by mmerabet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ CFLAGS		=	-Wall -Werror -Wextra
 LIBFTD		=	libft
 LIBFT		=	$(LIBFTD)/libft.a
 
-_NTS	=		main.c \
+_NTS	=		main.c ft_getcmdf.c\
 
 SRCD		=	srcs/
 ICLD		=	-Iincludes -I$(LIBFTD)/includes

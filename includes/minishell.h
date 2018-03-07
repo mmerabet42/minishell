@@ -6,18 +6,17 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:44:40 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/01 20:54:37 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/07 20:38:11 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINSHELL_H
+#ifndef MINISHELL_H
 # define MINISHELL_H
 
 # include "libft.h"
 
 typedef struct	s_cmdf
 {
-	char		*name;
 	int			argc;
 	char		**argv;
 	char		*cmd;
