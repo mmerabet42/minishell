@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:44:40 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/07 20:38:11 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/08 20:04:34 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,17 @@ typedef struct	s_shell
 	int			ison:1;
 }				t_shell;
 
+typedef t_shret	(*builtin_func)(int argc, char **argv, t_shell *shell);
+
+typedef struct	s_builtin
+{
+	char			*name;
+	builtin_func	func;
+}				t_builtin;
+
 typedef enum	e_shret
 {
-	SH_ADENIED, SH_NFOUND, SH_NEXIST, SH_OK, SH_NONE
+	SH_ADENIED, SH_NFOUND, SH_NEXIST, SH_OK, SH_NONE, SH_EFAIL, SH_ESUCCESS
 }				t_shret;
 
 char			*ft_getargs(char *cmd, t_args *args);
@@ -47,5 +55,15 @@ t_shret			ft_getfullpath(char *fname,
 char			*ft_strshret(t_shret shret);
 
 void			ft_initshell(t_shell *shell, char **envp);
+
+void			ft_exec(char *filename, char **argv, char **envp);
+
+t_shret			ft_isbuiltin(char *name, t_args *args, t_shell *shell);
+
+t_shret			builtin_cd(int argc, char **argv, t_shell *shell);
+t_shret			builtin_echo(int argc, char **argv, t_shell *shell);
+t_shret			builtin_setenv(int argc, char **argv, t_shell *shell);
+t_shret			builtin_unsetenv(int argc, char **argv, t_shell *shell);
+t_shret			builtin_env(int argc, char **argv, t_shell *shell);
 
 #endif

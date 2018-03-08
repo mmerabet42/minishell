@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:40:09 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/07 20:50:47 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/08 20:04:32 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,57 +17,49 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-int main(int argc, char **argv, char **envp)
+static void ft_readline(char *line, t_shell *shell)
 {
-/*	char **ok = NULL;
-	while (i < argc)
-	{
-		ok = ft_memjoin_clr(ok, sizeof(char *) * i, argv + i, sizeof(char *));
-		++i;
-	}
-
-	i = 0;
-	while (i < argc)
-	{
-		ft_printf("L: '%s'\n", ok[i++]);
-	}
-
-	return (0);
-*/	char	fullpath[1024];
-	char	*line, *pline;
-	t_shell	shell;
+	char	fullpath[1024];
 	t_args	args;
 	t_shret	shret;
 
-	(void)argc;
-	(void)argv;
-	ft_initshell(&shell, envp);
 	ft_bzero(&args, sizeof(t_args));
+	while ((line = ft_getargs(line, &args)))
+	{
+		if (args.argc > 1 && !ft_strcmp(args.argv[0], "exit"))
+			shell->ison = 0;
+		else if (args.argc > 1)
+		{
+			if (ft_isbuiltin(args.argv[0], &args, shell) == SH_NFOUND)
+			{
+				shret = ft_getfullpath(args.argv[0], shell, fullpath, 1024);
+				if (shret != SH_OK)
+					ft_printf("sh: %s: %s\n", ft_strshret(shret), args.argv[0]);
+				else
+					ft_exec(fullpath, args.argv, shell->envp);
+			}
+		}
+		ft_delargs(&args);
+	}
+}
+
+int main(int argc, char **argv, char **envp)
+{
+	char	*line;
+	char	*colorpwd;
+	t_shell	shell;
+
+	if (argc > 1)
+		colorpwd = argv[1];
+	else
+		colorpwd = "cyan";
+	ft_initshell(&shell, envp);
 	while (shell.ison)
 	{
-		ft_printf("%{lgreen}%s%{0} > ", shell.pwd);
-		get_next_line(1, &line);
-		pline = line;
-		while ((pline = ft_getargs(pline, &args)))
-		{
-			if (args.argc > 1 && !ft_strcmp(args.argv[0], "exit"))
-				shell.ison = 0;
-			else if (args.argc > 1)
-			{
-				shret = ft_getfullpath(args.argv[0], &shell, fullpath, 1024);
-				if (shret != SH_OK)
-					ft_printf("minishell: %s: %s\n", ft_strshret(shret), args.argv[0]);
-				else
-				{
-					pid_t pid = fork();
-					if (!pid)
-						execve(fullpath, args.argv, envp);
-					else
-						wait(NULL);
-				}
-			}
-			ft_delargs(&args);
-		}
+		ft_printf("%{%s}%s%{0} > ", colorpwd, shell.pwd);
+		if (get_next_line(1, &line) == -1)
+			exit(EXIT_FAILURE);
+		ft_readline(line, &shell);
 		free(line);
 	}
 	return (0);

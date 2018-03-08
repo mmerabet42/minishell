@@ -1,5 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_initshell.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/08 19:09:16 by mmerabet          #+#    #+#             */
+/*   Updated: 2018/03/08 19:18:07 by mmerabet         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "shell.h"
 #include <unistd.h>
+#include <sys/wait.h>
 
 void	ft_initshell(t_shell *shell, char **envp)
 {
@@ -9,4 +22,14 @@ void	ft_initshell(t_shell *shell, char **envp)
 	shell->paths = ft_getpaths(envp);
 	shell->ison = 1;
 	shell->envp = envp;
+}
+
+void	ft_exec(char *filename, char **argv, char **envp)
+{
+	pid_t	pid;
+
+	if (!(pid = fork()))
+		execve(filename, argv, envp);
+	else
+		wait(NULL);
 }
