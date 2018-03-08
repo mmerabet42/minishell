@@ -13,10 +13,11 @@
 #include "ft_io.h"
 #include "ft_str.h"
 #include "ft_mem.h"
-#include "minishell.h"
+#include "shell.h"
 #include <unistd.h>
+#include <sys/wait.h>
 
-int main(int argc, char **argv)
+int main(int argc, char **argv, char **envp)
 {
 /*	char **ok = NULL;
 	while (i < argc)
@@ -32,24 +33,42 @@ int main(int argc, char **argv)
 	}
 
 	return (0);
-*/	char	currpwd[2048];
-	char	*line;
-	t_cmdf	cmdf;
-	int	i = 0;
+*/	char	fullpath[1024];
+	char	*line, *pline;
+	t_shell	shell;
+	t_args	args;
+	t_shret	shret;
 
 	(void)argc;
 	(void)argv;
-	line = NULL;
-	getcwd(currpwd, 2048);
-	while (ft_strcmp(line, "exit"))
+	ft_initshell(&shell, envp);
+	ft_bzero(&args, sizeof(t_args));
+	while (shell.ison)
 	{
-		ft_printf("%{lgreen}%s%{0} > ", currpwd);
+		ft_printf("%{lgreen}%s%{0} > ", shell.pwd);
 		get_next_line(1, &line);
-		ft_getcmdf(line, &cmdf);
-		ft_printf("%d\n", cmdf.argc);
-		i = 0;
-		while (i < cmdf.argc)
-			ft_printf("\t'%s'\n", cmdf.argv[i++]);
+		pline = line;
+		while ((pline = ft_getargs(pline, &args)))
+		{
+			if (args.argc > 1 && !ft_strcmp(args.argv[0], "exit"))
+				shell.ison = 0;
+			else if (args.argc > 1)
+			{
+				shret = ft_getfullpath(args.argv[0], &shell, fullpath, 1024);
+				if (shret != SH_OK)
+					ft_printf("minishell: %s: %s\n", ft_strshret(shret), args.argv[0]);
+				else
+				{
+					pid_t pid = fork();
+					if (!pid)
+						execve(fullpath, args.argv, envp);
+					else
+						wait(NULL);
+				}
+			}
+			ft_delargs(&args);
+		}
+		free(line);
 	}
 	return (0);
 }

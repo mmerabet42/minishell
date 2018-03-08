@@ -17,7 +17,7 @@ CFLAGS		=	-Wall -Werror -Wextra
 LIBFTD		=	libft
 LIBFT		=	$(LIBFTD)/libft.a
 
-_NTS	=		main.c ft_getcmdf.c\
+_NTS	=		main.c ft_getargs.c ft_getpaths.c ft_initshell.c \
 
 SRCD		=	srcs/
 ICLD		=	-Iincludes -I$(LIBFTD)/includes
@@ -47,9 +47,9 @@ _SUCCESS=$(_RED)
 
 all: $(NAME)
 
-$(NAME): includes/minishell.h $(LIBFT) $(OBJB)
+$(NAME): includes/shell.h $(LIBFT) $(OBJB)
 	@echo "$(_RED)Compiling$(_END) $(NAME)$(_RED)...$(_END)"
-	@$(CC) $(CFLAGS) $(LIBFT) $(OBJB) $(FRAMEWORKS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJB) $(LIBFT) $(FRAMEWORKS) -o $(NAME)
 	@echo  "$(NAME) : $(_RED)done$(_END)"
 
 $(LIBFT):

@@ -10,19 +10,42 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef SHELL_H
+# define SHELL_H
 
-# include "libft.h"
+# include <unistd.h>
 
-typedef struct	s_cmdf
+typedef struct	s_args
 {
 	int			argc;
 	char		**argv;
-	char		*cmd;
-}				t_cmdf;
+}				t_args;
 
-char			*ft_getcmdf(char *cmd, t_cmdf *cmdf);
-void			ft_cmdfdel(t_cmdf *cmdf);
+typedef struct	s_shell
+{
+	char		**paths;
+	char		**envp;
+	char		pwd[2048];
+	int			ison:1;
+}				t_shell;
+
+typedef enum	e_shret
+{
+	SH_ADENIED, SH_NFOUND, SH_NEXIST, SH_OK, SH_NONE
+}				t_shret;
+
+char			*ft_getargs(char *cmd, t_args *args);
+void			ft_delargs(t_args *args);
+
+char			**ft_getpaths(char **envp);
+
+t_shret			ft_getfullpath(char *fname,
+								t_shell *shell,
+								char *fullpath,
+								size_t size);
+
+char			*ft_strshret(t_shret shret);
+
+void			ft_initshell(t_shell *shell, char **envp);
 
 #endif

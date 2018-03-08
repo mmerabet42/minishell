@@ -10,48 +10,49 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "shell.h"
 #include "ft_str.h"
 #include "ft_mem.h"
 
-char	*ft_getcmdf(char *cmd, t_cmdf *cmdf)
+char	*ft_getargs(char *cmd, t_args *args)
 {
 	char	*str;
+	int		pos;
 
-	if (!cmd || !cmdf)
+	if (!cmd || !args || !*cmd)
 		return (NULL);
 	while (*cmd == ' ')
 		++cmd;
-	cmdf->cmd = cmd;
-	cmdf->argv = NULL;
-	cmdf->argc = 0;
 	while (*cmd && *cmd != ';')
 	{
 		if (*cmd == '"')
 			str = ft_strbetween(cmd, '"', '"');
 		else if (*cmd == '\'')
 			str = ft_strbetween(cmd, '\'', '\'');
-		else if (!(str = ft_strbefore(cmd, ' ')))
-			str = ft_strdup(cmd);
-		ft_printf("L: '%s'\n", str);
-		cmdf->argv = ft_memjoin_clr(cmdf->argv, sizeof(char *) * cmdf->argc, &str, sizeof(char *));
-		cmd += ft_strlen(str) + (*cmd == '"' || *cmd == '\'' ? 2 : 1);
-		free(str);
-		++cmdf->argc;
+		else if ((pos = ft_strpbrk_pos(cmd, " \t;")) != -1 || 1)
+			str = (pos != -1 ? ft_strndup(cmd, pos) : ft_strdup(cmd));
+		args->argv = ft_memjoin_clr(args->argv, sizeof(char *) * args->argc++,
+			&str, sizeof(char *));
+		cmd += ft_strlen(str) + (*cmd == '"' || *cmd == '\'' ? 2 : 0);
+		while (*cmd == ' ' || *cmd == '\t')
+			++cmd;
 	}
-	return (cmd);
+	str = NULL;
+	args->argv = ft_memjoin_clr(args->argv, sizeof(char *) * args->argc++,
+		&str, sizeof(char *));
+	return (*cmd == ';' ? cmd + 1 : cmd);
 }
 
-void	ft_cmdfdel(t_cmdf *cmdf)
+void	ft_delargs(t_args *args)
 {
-	char	**ptr;
+	int		i;
 
-	if (!cmdf)
+	if (!args)
 		return ;
-	ptr = cmdf->argv;
-	while (*ptr)
-		free(*ptr++);
-	free(cmdf->argv);
-	cmdf->argv = NULL;
-	cmdf->cmd = NULL;
+	i = 0;
+	while (i < args->argc)
+		free(args->argv[i++]);
+	free(args->argv);
+	args->argv = NULL;
+	args->argc = 0;
 }
