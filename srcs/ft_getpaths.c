@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 19:09:27 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/08 19:09:30 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/08 21:54:57 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ char	**ft_getpaths(char **envp)
 	return (NULL);
 }
 
-static t_shret	testaccess(char *filename)
+t_shret			ft_access(char *filename, int tests)
 {
 	if (!access(filename, F_OK))
 	{
-		if (!access(filename, X_OK))
+		if (!access(filename, tests))
 			return (SH_OK);
-		return (SH_ADENIED);
+		return (SH_DENIED);
 	}
 	return (SH_NFOUND);
 }
@@ -45,7 +45,7 @@ t_shret	ft_getfullpath(char *fname, t_shell *shell, char *fullpath, size_t size)
 	if (fname[0] == '.' && fname[1] == '/' && ft_memset(fullpath, '\0', size))
 	{
 		ft_strcat(ft_strcatc(ft_strcat(fullpath, shell->pwd), '/'), fname);
-		if ((shret = testaccess(fullpath)) == SH_NFOUND)
+		if ((shret = ft_access(fullpath, X_OK)) == SH_NFOUND)
 			return (SH_NEXIST);
 		return (shret);
 	}

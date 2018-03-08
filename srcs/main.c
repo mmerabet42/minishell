@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:40:09 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/08 20:04:32 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/08 21:58:32 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "shell.h"
 #include <unistd.h>
 #include <sys/wait.h>
+#include <locale.h>
 
 static void ft_readline(char *line, t_shell *shell)
 {
@@ -46,17 +47,24 @@ static void ft_readline(char *line, t_shell *shell)
 int main(int argc, char **argv, char **envp)
 {
 	char	*line;
-	char	*colorpwd;
 	t_shell	shell;
+	char	*promptf;
 
-	if (argc > 1)
-		colorpwd = argv[1];
-	else
-		colorpwd = "cyan";
 	ft_initshell(&shell, envp);
+	if (argc > 1)
+	{
+		promptf = ft_strdup(argv[1]);
+		promptf = ft_strrepstr_clr(promptf, "@user", "%2$s");
+		promptf = ft_strrepstr_clr(promptf, "@pwd", "%3$s");
+		promptf = ft_strrepstr_clr(promptf, "@sign-jap", "%1$S");
+		promptf = ft_strrepstr_clr(promptf, "@sign-3dot", "%4$S");
+	}
+	else
+		promptf = "%S %{lred}%s %{cyan}%s%{0} %{bold}%S%{0} ";
+	setlocale(LC_ALL, "");
 	while (shell.ison)
 	{
-		ft_printf("%{%s}%s%{0} > ", colorpwd, shell.pwd);
+		ft_printf(promptf, L"㋜", shell.user, shell.pwd, L"∴");
 		if (get_next_line(1, &line) == -1)
 			exit(EXIT_FAILURE);
 		ft_readline(line, &shell);

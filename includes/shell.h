@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:44:40 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/08 20:04:34 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/08 21:58:33 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,17 @@ typedef struct	s_args
 
 typedef struct	s_shell
 {
+	char		*user;
 	char		**paths;
 	char		**envp;
 	char		pwd[2048];
 	int			ison:1;
 }				t_shell;
+
+typedef enum	e_shret
+{
+	SH_ADENIED, SH_NFOUND, SH_NEXIST, SH_OK, SH_NONE, SH_EFAIL, SH_ESUCCESS
+}				t_shret;
 
 typedef t_shret	(*builtin_func)(int argc, char **argv, t_shell *shell);
 
@@ -37,13 +43,10 @@ typedef struct	s_builtin
 	builtin_func	func;
 }				t_builtin;
 
-typedef enum	e_shret
-{
-	SH_ADENIED, SH_NFOUND, SH_NEXIST, SH_OK, SH_NONE, SH_EFAIL, SH_ESUCCESS
-}				t_shret;
-
 char			*ft_getargs(char *cmd, t_args *args);
 void			ft_delargs(t_args *args);
+
+t_shret			ft_access(char *filename, int tests);
 
 char			**ft_getpaths(char **envp);
 
