@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:40:09 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/08 21:58:32 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/09 13:25:10 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,6 @@ int main(int argc, char **argv, char **envp)
 		ft_readline(line, &shell);
 		free(line);
 	}
+	ft_delshell(&shell);
 	return (0);
 }

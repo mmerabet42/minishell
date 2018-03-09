@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:44:40 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/08 21:58:33 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/09 13:25:12 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ t_shret			ft_getfullpath(char *fname,
 char			*ft_strshret(t_shret shret);
 
 void			ft_initshell(char *name, t_shell *shell, char **envp);
+void			ft_delshell(t_shell *shell);
 
 void			ft_exec(char *filename, char **argv, char **envp);
-
 
 t_shret			ft_isbuiltin(char *name, t_args *args, t_shell *shell);
 

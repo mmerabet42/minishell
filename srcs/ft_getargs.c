@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 20:27:14 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/08 18:47:50 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/09 13:15:56 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,5 @@ void	ft_delargs(t_args *args)
 		free(args->argv[i++]);
 	free(args->argv);
 	free(args->types);
-	args->types = NULL;
-	args->argv = NULL;
-	args->argc = 0;
+	ft_bzero(args, sizeof(t_args));
 }
