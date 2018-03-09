@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:40:09 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/09 13:25:10 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/09 17:47:00 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int main(int argc, char **argv, char **envp)
 	setlocale(LC_ALL, "");
 	while (shell.ison)
 	{
-		ft_printf(promptf, L"㋜", shell.user, shell.pwd, L"∴");
+		ft_printf(promptf, L"㋜", shell->user, shell->pwd, L"∴");
 		if (get_next_line(1, &line) == -1)
 			exit(EXIT_FAILURE);
 		ft_readline(line, &shell);

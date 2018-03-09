@@ -6,19 +6,19 @@
 #    By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/11 18:07:15 by mmerabet          #+#    #+#              #
-#    Updated: 2018/03/09 13:02:26 by mmerabet         ###   ########.fr        #
+#    Updated: 2018/03/09 16:49:00 by mmerabet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
 CC			=	gcc
-CFLAGS		=	-Wall -Werror -Wextra -g -fsanitize=address
+CFLAGS		=	-Wall -Werror -Wextra
 
 LIBFTD		=	libft
 LIBFT		=	$(LIBFTD)/libft.a
 
 _NTS	=		main.c ft_getargs.c ft_getpaths.c ft_initshell.c \
-				builtins.c ft_isbuiltin.c builtin_cd.c \
+				builtins.c ft_isbuiltin.c builtin_cd.c ft_env.c \
 
 SRCD		=	srcs/
 ICLD		=	-Iincludes -I$(LIBFTD)/includes

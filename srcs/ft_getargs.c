@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 20:27:14 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/09 13:15:56 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/09 16:19:53 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "ft_mem.h"
 #include "ft_printf.h"
 
-static void impltype(t_args *args, char c)
+static void	impltype(t_args *args, char c)
 {
 	t_artype	type;
 
@@ -29,7 +29,7 @@ static void impltype(t_args *args, char c)
 		&type, sizeof(t_artype));
 }
 
-static char	*ctilde(char *str, char *homepwd)
+static char	*ctilde(char *str, char *homepwd, char **cmd)
 {
 	char	*cstr;
 
@@ -39,17 +39,34 @@ static char	*ctilde(char *str, char *homepwd)
 	{
 		if ((cstr = ft_strjoin(homepwd, str + 1)))
 		{
+			*cmd += ft_strlen(str);
 			free(str);
 			return (cstr);
 		}
 	}
+	*cmd += ft_strlen(str);
 	return (str);
 }
 
-char	*ft_getargs(char *cmd, t_args *args, t_shell *shell)
+static char	*checkarg(char **cmd, t_shell *shell)
 {
 	char	*str;
 	int		pos;
+
+	if (**cmd == '"' || **cmd == '\'')
+	{
+		str = ft_strbetween(*cmd, **cmd, **cmd);
+		*cmd += ft_strlen(str) + 2;
+	}
+	else if ((pos = ft_strpbrk_pos(*cmd, " \t;")) != -1 || 1)
+		str = ctilde(pos != -1 ? ft_strndup(*cmd, pos) : ft_strdup(*cmd),
+				shell->homepwd, cmd);
+	return (str);
+}
+
+char		*ft_getargs(char *cmd, t_args *args, t_shell *shell)
+{
+	char	*str;
 
 	if (!cmd || !args || !*cmd)
 		return (NULL);
@@ -57,15 +74,10 @@ char	*ft_getargs(char *cmd, t_args *args, t_shell *shell)
 		++cmd;
 	while (*cmd && *cmd != ';')
 	{
-		if (*cmd == '"' || *cmd == '\'')
-			str = ft_strbetween(cmd, *cmd, *cmd);
-		else if ((pos = ft_strpbrk_pos(cmd, " \t;")) != -1 || 1)
-			str = ctilde(pos != -1 ? ft_strndup(cmd, pos) : ft_strdup(cmd),
-				shell->homepwd);
 		impltype(args, *cmd);
-		args->argv = ft_memjoin_clr(args->argv, sizeof(char *) * args->argc++,
-			&str, sizeof(char *));
-		cmd += ft_strlen(str) + (*cmd == '"' || *cmd == '\'' ? 2 : 0);
+		if ((str = checkarg(&cmd, shell)))
+			args->argv = ft_memjoin_clr(args->argv,
+					sizeof(char *) * args->argc++, &str, sizeof(char *));
 		while (*cmd == ' ' || *cmd == '\t')
 			++cmd;
 	}
@@ -75,7 +87,7 @@ char	*ft_getargs(char *cmd, t_args *args, t_shell *shell)
 	return (*cmd == ';' ? cmd + 1 : cmd);
 }
 
-void	ft_delargs(t_args *args)
+void		ft_delargs(t_args *args)
 {
 	int		i;
 

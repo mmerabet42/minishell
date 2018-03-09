@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 19:09:16 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/09 13:18:58 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/09 17:46:23 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ void	ft_initshell(char *name, t_shell *shell, char **envp)
 	}
 	if (shell->envp)
 		shell->envp[i] = NULL;
+	shell->user = ft_getenv("USER", shell);
+	shell->homepwd = ft_getenv("HOME", shell);
+	shell->pwd = ft_getenv("PWD", shell);
 }
 
 void	ft_delshell(t_shell *shell)

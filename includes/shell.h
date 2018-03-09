@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:44:40 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/09 13:25:12 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/09 17:47:01 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ typedef struct	s_args
 typedef struct	s_shell
 {
 	char		*name;
+	char		*pwd;
 	char		*homepwd;
 	char		*user;
 	char		**paths;
 	char		**envp;
-	char		pwd[2048];
 	int			ison:1;
 }				t_shell;
 
@@ -53,6 +53,9 @@ typedef struct	s_builtin
 
 char			*ft_getargs(char *cmd, t_args *args, t_shell *shell);
 void			ft_delargs(t_args *args);
+
+char			*ft_getenv(char *name, t_shell *shell);
+void			ft_setenv(char *name, char *value, t_shell *shell);
 
 t_shret			ft_access(char *filename, int tests);
 t_shret			ft_chdir(char *dirname, t_shell *shell);
