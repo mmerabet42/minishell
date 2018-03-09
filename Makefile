@@ -18,7 +18,7 @@ LIBFTD		=	libft
 LIBFT		=	$(LIBFTD)/libft.a
 
 _NTS	=		main.c ft_getargs.c ft_getpaths.c ft_initshell.c \
-				ft_builtins.c ft_isbuiltin.c \
+				builtins.c ft_isbuiltin.c builtin_cd.c \
 
 SRCD		=	srcs/
 ICLD		=	-Iincludes -I$(LIBFTD)/includes

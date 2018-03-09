@@ -15,25 +15,33 @@
 
 # include <unistd.h>
 
+typedef enum	e_shret
+{
+	SH_ADENIED, SH_NFOUND, SH_NEXIST, SH_OK, SH_NONE, SH_EFAIL, SH_ESUCCESS
+}				t_shret;
+
+typedef enum	e_artype
+{
+	AR_NONE, AR_QUOTE, AR_DQUOTE
+}				t_artype;
+
 typedef struct	s_args
 {
 	int			argc;
 	char		**argv;
+	t_artype	*types;
 }				t_args;
 
 typedef struct	s_shell
 {
+	char		*name;
+	char		*homepwd;
 	char		*user;
 	char		**paths;
 	char		**envp;
 	char		pwd[2048];
 	int			ison:1;
 }				t_shell;
-
-typedef enum	e_shret
-{
-	SH_ADENIED, SH_NFOUND, SH_NEXIST, SH_OK, SH_NONE, SH_EFAIL, SH_ESUCCESS
-}				t_shret;
 
 typedef t_shret	(*builtin_func)(int argc, char **argv, t_shell *shell);
 
@@ -43,10 +51,11 @@ typedef struct	s_builtin
 	builtin_func	func;
 }				t_builtin;
 
-char			*ft_getargs(char *cmd, t_args *args);
+char			*ft_getargs(char *cmd, t_args *args, t_shell *shell);
 void			ft_delargs(t_args *args);
 
 t_shret			ft_access(char *filename, int tests);
+t_shret			ft_chdir(char *dirname, t_shell *shell);
 
 char			**ft_getpaths(char **envp);
 
@@ -57,9 +66,10 @@ t_shret			ft_getfullpath(char *fname,
 
 char			*ft_strshret(t_shret shret);
 
-void			ft_initshell(t_shell *shell, char **envp);
+void			ft_initshell(char *name, t_shell *shell, char **envp);
 
 void			ft_exec(char *filename, char **argv, char **envp);
+
 
 t_shret			ft_isbuiltin(char *name, t_args *args, t_shell *shell);
 

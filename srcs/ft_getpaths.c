@@ -32,9 +32,9 @@ t_shret			ft_access(char *filename, int tests)
 	{
 		if (!access(filename, tests))
 			return (SH_OK);
-		return (SH_DENIED);
+		return (SH_ADENIED);
 	}
-	return (SH_NFOUND);
+	return (SH_NEXIST);
 }
 
 t_shret	ft_getfullpath(char *fname, t_shell *shell, char *fullpath, size_t size)
@@ -45,9 +45,7 @@ t_shret	ft_getfullpath(char *fname, t_shell *shell, char *fullpath, size_t size)
 	if (fname[0] == '.' && fname[1] == '/' && ft_memset(fullpath, '\0', size))
 	{
 		ft_strcat(ft_strcatc(ft_strcat(fullpath, shell->pwd), '/'), fname);
-		if ((shret = ft_access(fullpath, X_OK)) == SH_NFOUND)
-			return (SH_NEXIST);
-		return (shret);
+		return (ft_access(fullpath, X_OK));
 	}
 	shret = SH_NFOUND;
 	it = shell->paths;

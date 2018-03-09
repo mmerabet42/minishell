@@ -27,7 +27,7 @@ t_shret	ft_isbuiltin(char *filename, t_args *args, t_shell *shell)
 	while (i < g_builtins_size)
 	{
 		if (!ft_strcmp(filename, g_builtins[i].name))
-			return (g_builtins[i].func(args->argc, args->argv, shell));
+			return (g_builtins[i].func(args->argc - 1, args->argv, shell));
 		++i;
 	}
 	return (SH_NFOUND);

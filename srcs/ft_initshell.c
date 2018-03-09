@@ -15,21 +15,22 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-void	ft_initshell(t_shell *shell, char **envp)
+void	ft_initshell(char *name, t_shell *shell, char **envp)
 {
 	if (!shell)
 		return ;
-	getcwd(shell->pwd, 2048);
 	shell->paths = ft_getpaths(envp);
 	shell->ison = 1;
 	shell->envp = envp;
+	shell->name = name;
 	while (*envp)
 	{
 		if (ft_strmatch(*envp, "USER=*"))
-		{
 			shell->user = ft_strchr(*envp, '=') + 1;
-			break;
-		}
+		else if (ft_strmatch(*envp, "HOME=*"))
+			shell->homepwd = ft_strchr(*envp, '=') + 1;
+		else if (ft_strmatch(*envp, "PWD=*"))
+			ft_strcpy(shell->pwd, ft_strchr(*envp, '=') + 1);
 		++envp;
 	}
 }

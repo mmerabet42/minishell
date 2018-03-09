@@ -13,6 +13,7 @@
 #include "shell.h"
 #include "ft_io.h"
 #include "ft_str.h"
+#include "ft_mem.h"
 
 t_shret	builtin_echo(int argc, char **argv, t_shell *shell)
 {
@@ -32,15 +33,6 @@ t_shret	builtin_echo(int argc, char **argv, t_shell *shell)
 	}
 	if (!n)
 		ft_putchar('\n');
-	return (SH_ESUCCESS);
-}
-
-t_shret	builtin_cd(int argc, char **argv, t_shell *shell)
-{
-	if (argc > 1)
-	{
-		
-	}
 	return (SH_ESUCCESS);
 }
 
