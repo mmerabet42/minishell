@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 19:09:27 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/08 21:54:57 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/10 19:11:15 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	**ft_getpaths(char **envp)
 	return (NULL);
 }
 
-t_shret			ft_access(char *filename, int tests)
+t_shret	ft_access(char *filename, int tests)
 {
 	if (!access(filename, F_OK))
 	{

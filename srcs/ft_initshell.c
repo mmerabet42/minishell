@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 19:09:16 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/09 17:46:23 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/10 20:12:50 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,22 @@
 #include <sys/wait.h>
 #include "ft_printf.h"
 
-void	ft_initshell(char *name, t_shell *shell, char **envp)
+char		*ft_getcwd(char *pwd, size_t size)
+{
+	ft_bzero(pwd, size);
+	return (getcwd(pwd, size));
+}
+
+void		ft_initshell(char *name, t_shell *shell, char **envp)
 {
 	int	i;
 
 	if (!shell)
 		return ;
 	shell->paths = ft_getpaths(envp);
-	shell->ison = 1;
+	shell->running = 1;
 	shell->envp = (char **)malloc(sizeof(char *) *
-			(ft_tabsize((const char **)envp) + 1));
+			(ft_tabsize(envp) + 1));
 	shell->name = name;
 	i = 0;
 	while (*envp)
@@ -35,17 +41,13 @@ void	ft_initshell(char *name, t_shell *shell, char **envp)
 			shell->user = ft_strchr(*envp, '=') + 1;
 		else if (ft_strmatch(*envp, "HOME=*"))
 			shell->homepwd = ft_strchr(*envp, '=') + 1;
-		else if (ft_strmatch(*envp, "PWD=*"))
-			ft_strcpy(shell->pwd, ft_strchr(*envp, '=') + 1);
 		if (shell->envp)
 			shell->envp[i++] = ft_strdup(*envp);
 		++envp;
 	}
 	if (shell->envp)
 		shell->envp[i] = NULL;
-	shell->user = ft_getenv("USER", shell);
-	shell->homepwd = ft_getenv("HOME", shell);
-	shell->pwd = ft_getenv("PWD", shell);
+	ft_getcwd(shell->pwd, 2048); 
 }
 
 void	ft_delshell(t_shell *shell)

@@ -16,8 +16,7 @@ t_shret	ft_chdir(char *name, t_shell *shell)
 		if (shell)
 		{
 			ft_setenv("OLDPWD", ft_getenv("PWD", shell), shell);
-			ft_setenv("PWD", name, shell);
-			shell->pwd = n
+			ft_setenv("PWD", ft_getcwd(shell->pwd, 2048), shell);
 		}
 	}
 	return (SH_OK);
