@@ -29,7 +29,6 @@ typedef struct	s_args
 {
 	int			argc;
 	char		**argv;
-	t_artype	*types;
 }				t_args;
 
 typedef struct	s_shell

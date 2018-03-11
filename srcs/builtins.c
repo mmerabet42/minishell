@@ -14,11 +14,12 @@
 #include "ft_io.h"
 #include "ft_str.h"
 #include "ft_mem.h"
+#include "ft_printf.h"
 
 t_shret	builtin_echo(int argc, char **argv, t_shell *shell)
 {
-	int	i;
-	int	n;
+	int		i;
+	int		n;
 
 	(void)shell;
 	i = 1;
@@ -27,9 +28,10 @@ t_shret	builtin_echo(int argc, char **argv, t_shell *shell)
 		n = 1;
 	while (i < argc)
 	{
-		ft_putstr(argv[i++]);
+		ft_putstr(argv[i]);
 		if (i + 1 < argc)
 			ft_putchar(' ');
+		++i;
 	}
 	if (!n)
 		ft_putchar('\n');

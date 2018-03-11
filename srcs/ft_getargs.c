@@ -15,20 +15,6 @@
 #include "ft_mem.h"
 #include "ft_printf.h"
 
-static void	impltype(t_args *args, char c)
-{
-	t_artype	type;
-
-	if (c == '"')
-		type = AR_DQUOTE;
-	else if (c == '\'')
-		type = AR_QUOTE;
-	else
-		type = AR_NONE;
-	args->types = ft_memjoin_clr(args->types, sizeof(t_artype) * args->argc,
-		&type, sizeof(t_artype));
-}
-
 static char	*ctilde(char *str, char *homepwd, char **cmd)
 {
 	char	*cstr;
@@ -50,18 +36,28 @@ static char	*ctilde(char *str, char *homepwd, char **cmd)
 
 static char	*checkarg(char **cmd, t_shell *shell)
 {
-	char	*str;
-	int		pos;
+	static char	*str;
+	char		*tld;
+	int			pos;
 
 	if (**cmd == '"' || **cmd == '\'')
 	{
-		str = ft_strbetween(*cmd, **cmd, **cmd);
-		*cmd += ft_strlen(str) + 2;
+		tld = ft_strbetween(*cmd, **cmd, **cmd);
+		if (*(*cmd += ft_strlen(tld) + 1) != '\0')
+			++(*cmd);
+		str = ft_strjoin_clr(str, tld, 2);
 	}
-	else if ((pos = ft_strpbrk_pos(*cmd, " \t;")) != -1 || 1)
-		str = ctilde(pos != -1 ? ft_strndup(*cmd, pos) : ft_strdup(*cmd),
-				shell->homepwd, cmd);
-	return (str);
+	else if ((pos = ft_strpbrk_pos(*cmd, " \t;\"'")) != -1 || 1)
+	{
+		tld = ctilde((pos != -1 ? ft_strndup(*cmd, pos) : ft_strdup(*cmd)),
+			shell->homepwd, cmd);
+		str = ft_strjoin_clr(str, tld, 2);
+	}
+	if (**cmd != ' ' && **cmd != '\t' && **cmd != ';' && **cmd != '\0')
+		return (NULL);
+	tld = str;
+	str = NULL;
+	return (tld);
 }
 
 char		*ft_getargs(char *cmd, t_args *args, t_shell *shell)
@@ -74,7 +70,6 @@ char		*ft_getargs(char *cmd, t_args *args, t_shell *shell)
 		++cmd;
 	while (*cmd && *cmd != ';')
 	{
-		impltype(args, *cmd);
 		if ((str = checkarg(&cmd, shell)))
 			args->argv = ft_memjoin_clr(args->argv,
 					sizeof(char *) * args->argc++, &str, sizeof(char *));
@@ -97,6 +92,5 @@ void		ft_delargs(t_args *args)
 	while (i < args->argc)
 		free(args->argv[i++]);
 	free(args->argv);
-	free(args->types);
 	ft_bzero(args, sizeof(t_args));
 }

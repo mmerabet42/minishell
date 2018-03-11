@@ -56,13 +56,14 @@ int main(int argc, char **argv, char **envp)
 		promptf = ft_strrepstr_clr(promptf, "@sign-3dot", "%4$S");
 	}
 	else
-		promptf = ft_strdup("%S %{lred}%s %{cyan}%s%{0} %{bold}%S%{0} ");
+		promptf = ft_strdup("%S %{lred}%s %{lcyan}%s%{0} %{bold}%S%{0} ");
 	setlocale(LC_ALL, "");
 	while (shell.running)
 	{
 		ft_printf(promptf, L"㋜", shell.user, shell.pwd, L"∴");
 		if (get_next_line(1, &line) == -1)
 			exit(EXIT_FAILURE);
+		ft_printf("%{0}");
 		ft_readline(line, &shell);
 		free(line);
 	}
