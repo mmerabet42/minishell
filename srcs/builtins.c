@@ -38,8 +38,26 @@ t_shret	builtin_echo(int argc, char **argv, t_shell *shell)
 
 t_shret	builtin_setenv(int argc, char **argv, t_shell *shell)
 {
-	if (argc >= 3)
-		ft_setenv(argv[1], argv[2], shell);
+	int		i;
+	char	*c;
+	char	*value;
+
+	i = 1;
+	while (i < argc)
+	{
+		if ((c = ft_strchr(argv[i], '=')))
+		{
+			*c = '\0';
+			value = c + 1;
+			ft_setenv(argv[i], value, shell);
+		}
+		else if (i + 1 < argc)
+		{
+			ft_setenv(argv[i], argv[i + 1], shell);
+			++i;
+		}
+		++i;
+	}
 	if (ft_strcmp(argv[1], "HOME"))
 		shell->homepwd = ft_getenv("HOME", shell);
 	else if (ft_strcmp(argv[1], "USER"))

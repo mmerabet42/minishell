@@ -43,8 +43,8 @@ static void ft_readline(char *line, t_shell *shell)
 
 int main(int argc, char **argv, char **envp)
 {
-	char	*line;
 	t_shell	shell;
+	char	*line;
 	char	*promptf;
 
 	ft_initshell("minishell", &shell, envp);

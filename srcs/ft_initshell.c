@@ -15,7 +15,6 @@
 #include "ft_mem.h"
 #include <unistd.h>
 #include <sys/wait.h>
-#include "ft_printf.h"
 
 char		*ft_getcwd(char *pwd, size_t size)
 {

@@ -14,6 +14,31 @@
 #include "ft_str.h"
 #include "ft_mem.h"
 
+static char	*ft_envitize(char *name, char *value)
+{
+	char	*res;
+
+	if (!(res = ft_strnew(ft_strlen(name) + ft_strlen(value) + 1)))
+		return (NULL);
+	return (ft_strcat(ft_strcatc(ft_strcat(res, name), '='), value));
+}
+
+int		ft_putenv(char *name, char *value, t_shell *shell)
+{
+	size_t	len;
+
+	if (!shell || !shell->envp || ft_getenv(name, shell))
+		return (0);
+	len = ft_tabsize(shell->envp);
+	if (!(shell->envp[len] = ft_envitize(name, value)))
+		return (0);
+	name = NULL;
+	if (!(shell->envp = (char **)ft_memjoin_clr(shell->envp,
+					sizeof(char *) * (len + 1), &name, sizeof(char *))))
+		return (0);
+	return (1);
+}
+
 char	*ft_getenv(char *name, t_shell *shell)
 {
 	char	*ename;
@@ -37,44 +62,28 @@ char	*ft_getenv(char *name, t_shell *shell)
 	return (NULL);
 }
 
-int		ft_addenv(char *name, char *value, t_shell *shell)
-{
-	size_t	len;
-
-	if (!shell || !shell->envp || ft_getenv(name, shell))
-		return (0);
-	name = NULL;
-	len = ft_tabsize(shell->envp);
-	if (!(shell->envp[len] = ft_strcat(ft_strcatc(
-				ft_strcat(ft_strnew(ft_strlen(name) + ft_strlen(value) + 1),
-					name), '='), value)))
-		return (0);
-	if (!(shell->envp = (char **)ft_memjoin_clr(shell->envp,
-					sizeof(char *) * len, &name, sizeof(char *))))
-		return (0);
-	return (1);
-}
-
 void	ft_setenv(char *name, char *value, t_shell *shell)
 {
 	char	*ename;
 	char	**it;
+	size_t	len;
 
 	if (!shell || !shell->envp)
 		return ;
 	else if (!(ename = ft_getenv(name, shell)))
 	{
-		ft_addenv(name, value, shell);
+		ft_putenv(name, value, shell);
 		return ;
 	}
-	ename -= ft_strlen(name) + 1;
+	len = ft_strlen(name);
+	ename -= len + 1;
 	it = shell->envp;
 	while (*it)
 	{
 		if (ename == *it)
 		{
 			free(*it);
-			*it = ft_strrepstr_clr(ename, "*", value);
+			*it = ft_envitize(name, value);
 			return ;
 		}
 		++it;
