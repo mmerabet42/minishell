@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 18:44:03 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/12 19:11:35 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/12 20:22:29 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,31 @@ void		ft_makeraw(int setb)
 		tcsetattr(0, TCSANOW, &g_origt);
 }
 
-static void movecursor(char *line, size_t *cursor, int direction)
+static void moveline(char *line, size_t *cursor, int direction)
 {
 	size_t	i;
 
-	i = (direction == 0 ? --(*cursor) : ft_strlen(line));
-	while ((direction == 0 && line[i]) || (direction == 1 && i >= *cursor))
+	i = (direction ? ft_strlen(line) : --(*cursor));
+	while ((direction == 0 && line[i]) || (direction && i >= *cursor && i > 0))
 	{
-		line[i]
+		line[i] = line[i + (direction ? -1 : 1)];
+		i += (direction ? -1 : 1);
 	}
+	if (direction)
+		ft_printf("%s\033[%dD", &line[*cursor + 1], ft_strlen(line) - *cursor - 1);
+	else
+		ft_printf("\033[1D%s \033[%dD", &line[*cursor], ft_strlen(line) - *cursor + 1);
+}
+
+static void	movecursor(char *line, size_t *cursor)
+{
+	int	c;
+
+	ft_getch();
+	if ((c = ft_getch()) == 'D' && *cursor != 0)
+		ft_printf("\033[1D", --(*cursor));
+	else if (c == 'C' && *cursor < ft_strlen(line))
+		ft_printf("\033[1C", ++(*cursor));
 }
 
 int			ft_readraw(char *line, size_t size)
@@ -64,35 +80,15 @@ int			ft_readraw(char *line, size_t size)
 		if (c == 3 || c == 4 || c == 13)
 			break ;
 		else if (c == 127 && cursor != 0)
-		{
-			size_t i = --cursor - 1;
-			while (line[++i])
-				line[i] = line[i + 1];
-			ft_printf("\033[1D%s \033[%dD", &line[cursor], ft_strlen(line) - cursor + 1);
-		}
+			moveline(line, &cursor, 0);
 		else if (c == '\033')
-		{
-			ft_getch();
-			if ((c = ft_getch()) == 'D' && cursor != 0)
-				ft_printf("\033[1D", --cursor);
-			else if (c == 'C' && cursor < ft_strlen(line))
-				ft_printf("\033[1C", ++cursor);
-		}
+			movecursor(line, &cursor);
 		else if (ft_isprint(c))
 		{
 			ft_putchar((char)c);
 			if (line[cursor] != '\0')
-			{
-				size_t i = ft_strlen(line);
-				while (i >= cursor)
-				{
-					line[i] = line[i - 1];
-					--i;
-				}
-				ft_printf("%s\033[%dD", &line[cursor + 1], ft_strlen(line) - cursor - 1);
-			}
-			line[cursor] = (char)c;
-			++cursor;
+				moveline(line, &cursor, 1);
+			line[cursor++] = (char)c;
 		}
 	}
 	ft_makeraw(0);

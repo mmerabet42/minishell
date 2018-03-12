@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:40:09 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/12 19:11:37 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/12 20:22:31 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,46 +64,6 @@ int main(int argc, char **argv, char **envp)
 	{
 		ft_printf("%S %{lred}%s %{lcyan}%s%{0} %{bold}%S%{0} ", L"㋜", shell.user, shell.pwd, L"∴");
 		ft_bzero(line, ft_strlen(line));
-		/*cursor = 0;
-		setraw(1);
-		while ((c = ft_getch()) && cursor < 2048)
-		{
-			if (c == 3 || c == 4 || c == 13)
-				break ;
-			else if (c == 127 && cursor != 0)
-			{
-				size_t i = --cursor - 1;
-				while (line[++i])
-					line[i] = line[i + 1];
-				ft_printf("\033[1D%s \033[%dD", &line[cursor], ft_strlen(line) - cursor + 1);
-			}
-			else if (c == '\033')
-			{
-				ft_getch();
-				if ((c = ft_getch()) == 'D' && cursor != 0)
-					ft_printf("\033[1D", --cursor);
-				else if (c == 'C' && cursor < ft_strlen(line))
-					ft_printf("\033[1C", ++cursor);
-			}
-			else if (ft_isprint(c))
-			{
-				ft_putchar((char)c);
-				if (line[cursor] != '\0')
-				{
-					size_t i = ft_strlen(line);
-					while (i >= cursor)
-					{
-						line[i] = line[i - 1];
-						--i;
-					}
-					ft_printf("%s\033[%dD", &line[cursor + 1], ft_strlen(line) - cursor - 1);
-				}
-				line[cursor] = (char)c;
-				++cursor;
-			}
-		}
-		setraw(0);
-		ft_printf("\n");*/
 		if ((c = ft_readraw(line, 2048)) != 3 && c != 4)
 			ft_readline(line, &shell);
 		else if (c == 4)
