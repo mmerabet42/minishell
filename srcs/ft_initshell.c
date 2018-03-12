@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 19:09:16 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/10 20:12:50 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/12 13:51:49 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,14 @@ void	ft_delshell(t_shell *shell)
 	ft_bzero(shell, sizeof(t_shell));
 }
 
-void	ft_exec(char *filename, char **argv, char **envp)
+void	ft_exec(char *filename, char **argv, char **envp, pid_t *pid)
 {
-	pid_t	pid;
+	pid_t	pidl;
 
-	if (!(pid = fork()))
+	pidl = fork();
+	if (pid)
+		*pid = pidl;
+	if (!pidl)
 		execve(filename, argv, envp);
 	else
 		wait(NULL);

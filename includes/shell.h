@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:44:40 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/10 19:59:48 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/12 13:51:53 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct	s_shell
 	char		**paths;
 	char		**envp;
 	int			running:1;
+	pid_t		pid;
 }				t_shell;
 
 typedef t_shret	(*builtin_func)(int argc, char **argv, t_shell *shell);
@@ -74,7 +75,7 @@ char			*ft_strshret(t_shret shret);
 void			ft_initshell(char *name, t_shell *shell, char **envp);
 void			ft_delshell(t_shell *shell);
 
-void			ft_exec(char *filename, char **argv, char **envp);
+void			ft_exec(char *filename, char **argv, char **envp, pid_t *pid);
 
 t_shret			ft_isbuiltin(char *name, t_args *args, t_shell *shell);
 
