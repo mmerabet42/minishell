@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:40:09 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/12 13:51:45 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/12 19:11:37 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,43 +41,16 @@ static void ft_readline(char *line, t_shell *shell)
 	}
 }
 
-#include <termios.h>
-
-struct termios	origt;
-
-void	setraw(void)
-{
-	struct termios	newt;
-
-	tcgetattr(0, &origt);
-	ft_memcpy(&newt, &origt, sizeof(struct termios));
-	cfmakeraw(&newt);
-	tcsetattr(0, TCSANOW, &newt);
-}
-
-void	unsetraw(void)
-{
-	tcsetattr(0, TCSANOW, &origt);
-}
-
-int getch(void)
-{
-	int				r;
-	unsigned char	c;
-	if ((r = read(0, &c, sizeof(unsigned char))) < 0)
-		return (r);
-	return (c);
-}
-
 int main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
 	char	line[2048];
-	char	*promptf;
 	int		c;
 
+	(void)argc;
+	(void)argv;
 	ft_initshell("minishell", &shell, envp);
-	if (argc > 1)
+/*	if (argc > 1)
 	{
 		promptf = ft_strrepstr_clr(ft_strdup(argv[1]), "@user", "%2$s");
 		promptf = ft_strrepstr_clr(promptf, "@pwd", "%3$s");
@@ -85,54 +58,58 @@ int main(int argc, char **argv, char **envp)
 		promptf = ft_strrepstr_clr(promptf, "@sign-3dot", "%4$S");
 	}
 	else
-		promptf = ft_strdup("%S %{lred}%s %{lcyan}%s%{0} %{bold}%S%{0} ");
+		promptf = ft_strdup("%S %{lred}%s %{lcyan}%s%{0} %{bold}%S%{0} ");*/
 	setlocale(LC_ALL, "");
-	setraw();
 	while (shell.running)
 	{
-		ft_putchar('\r');
-		ft_printf(promptf, L"㋜", shell.user, shell.pwd, L"∴");
-		ft_bzero(line, 2048);
-		while ((c = getch()) >= 0)
+		ft_printf("%S %{lred}%s %{lcyan}%s%{0} %{bold}%S%{0} ", L"㋜", shell.user, shell.pwd, L"∴");
+		ft_bzero(line, ft_strlen(line));
+		/*cursor = 0;
+		setraw(1);
+		while ((c = ft_getch()) && cursor < 2048)
 		{
-			if (c == 3 || c == 13)
-			{
-				ft_putstr("\r\n");
+			if (c == 3 || c == 4 || c == 13)
 				break ;
+			else if (c == 127 && cursor != 0)
+			{
+				size_t i = --cursor - 1;
+				while (line[++i])
+					line[i] = line[i + 1];
+				ft_printf("\033[1D%s \033[%dD", &line[cursor], ft_strlen(line) - cursor + 1);
 			}
 			else if (c == '\033')
 			{
-				
+				ft_getch();
+				if ((c = ft_getch()) == 'D' && cursor != 0)
+					ft_printf("\033[1D", --cursor);
+				else if (c == 'C' && cursor < ft_strlen(line))
+					ft_printf("\033[1C", ++cursor);
 			}
 			else if (ft_isprint(c))
 			{
-				ft_strcatc(line, (char)c);
 				ft_putchar((char)c);
+				if (line[cursor] != '\0')
+				{
+					size_t i = ft_strlen(line);
+					while (i >= cursor)
+					{
+						line[i] = line[i - 1];
+						--i;
+					}
+					ft_printf("%s\033[%dD", &line[cursor + 1], ft_strlen(line) - cursor - 1);
+				}
+				line[cursor] = (char)c;
+				++cursor;
 			}
-		/*	if (c == '\033')
-			{
-				getch();
-				ft_printf("%c ", (c = getch()));
-				if (c == 'A')
-					ft_printf("UP\n");
-				else if (c == 'B')
-					ft_printf("DOWN\n");
-				else if (c == 'C')
-					ft_printf("RIGHT\n");
-				else if (c == 'D')
-					ft_printf("LEFT\n");
-			}
-			else
-				ft_printf("Normal\n");*/
 		}
-	//	if (get_next_line(1, &line) == -1)
-	//		exit(EXIT_FAILURE);
-		ft_printf("%{0}");
-		ft_readline(line, &shell);
-	//	free(line);
+		setraw(0);
+		ft_printf("\n");*/
+		if ((c = ft_readraw(line, 2048)) != 3 && c != 4)
+			ft_readline(line, &shell);
+		else if (c == 4)
+			ft_readline("exit", &shell);
 	}
-	unsetraw();
+	ft_makeraw(0);
 	ft_delshell(&shell);
-	free(promptf);
 	return (0);
 }

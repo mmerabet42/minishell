@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 20:27:14 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/12 12:51:08 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/12 18:35:15 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char		*ft_getargs(char *cmd, t_args *args, t_shell *shell)
 			++cmd;
 	}
 	str = NULL;
-	args->argv = ft_memjoin_clr(args->argv, sizeof(char *) * args->argc++,
+	args->argv = ft_memjoin_clr(args->argv, sizeof(char *) * args->argc,
 		&str, sizeof(char *));
 	return (*cmd == ';' ? cmd + 1 : cmd);
 }

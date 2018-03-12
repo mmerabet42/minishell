@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 19:09:06 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/10 19:37:39 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/12 18:39:56 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_shret	ft_isbuiltin(char *filename, t_args *args, t_shell *shell)
 	while (i < g_builtins_size)
 	{
 		if (!ft_strcmp(filename, g_builtins[i].name))
-			return (g_builtins[i].func(args->argc - 1, args->argv, shell));
+			return (g_builtins[i].func(args->argc, args->argv, shell));
 		++i;
 	}
 	return (SH_NFOUND);

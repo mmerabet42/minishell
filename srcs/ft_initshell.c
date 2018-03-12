@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 19:09:16 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/12 13:51:49 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/12 18:32:07 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,10 @@ void	ft_exec(char *filename, char **argv, char **envp, pid_t *pid)
 	if (pid)
 		*pid = pidl;
 	if (!pidl)
+	{
 		execve(filename, argv, envp);
+		exit(0);
+	}
 	else
 		wait(NULL);
 }

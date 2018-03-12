@@ -6,7 +6,7 @@
 #    By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/11 18:07:15 by mmerabet          #+#    #+#              #
-#    Updated: 2018/03/12 12:33:12 by mmerabet         ###   ########.fr        #
+#    Updated: 2018/03/12 19:00:16 by mmerabet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ LIBFTD		=	libft
 LIBFT		=	$(LIBFTD)/libft.a
 
 _NTS	=		main.c ft_getargs.c ft_getpaths.c ft_initshell.c \
-				builtins.c ft_isbuiltin.c builtin_cd.c ft_env.c \
+				builtins.c ft_isbuiltin.c builtin_cd.c ft_env.c ft_readraw.c \
 
 SRCD		=	srcs/
 ICLD		=	-Iincludes -I$(LIBFTD)/includes

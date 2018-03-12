@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:44:40 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/12 13:51:53 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/12 19:11:38 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define SHELL_H
 
 # include <unistd.h>
+# include "ft_list.h"
 
 typedef enum	e_shret
 {
@@ -40,6 +41,7 @@ typedef struct	s_shell
 	char		**paths;
 	char		**envp;
 	int			running:1;
+	t_list		*history;
 	pid_t		pid;
 }				t_shell;
 
@@ -62,6 +64,9 @@ int				ft_addenv(char *name, char *value, t_shell *shell);
 t_shret			ft_access(char *filename, int tests);
 t_shret			ft_chdir(char *dirname, t_shell *shell);
 char			*ft_getcwd(char *pwd, size_t size);
+
+void			ft_makeraw(int setb);
+int				ft_readraw(char *line, size_t size);
 
 char			**ft_getpaths(char **envp);
 
