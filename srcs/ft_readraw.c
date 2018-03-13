@@ -46,7 +46,8 @@ static void moveline(char *line, size_t *cursor, int direction)
 	size_t	i;
 
 	i = (direction ? ft_strlen(line) : --(*cursor));
-	while ((direction == 0 && line[i]) || (direction && i >= *cursor && i > 0))
+	while (((direction == 0 && line[i])
+		|| (direction && i >= *cursor && i > 0)) && i < 2048)
 	{
 		line[i] = line[i + (direction ? -1 : 1)];
 		i += (direction ? -1 : 1);
@@ -85,11 +86,14 @@ int			ft_readraw(char *line, size_t size)
 			movecursor(line, &cursor);
 		else if (ft_isprint(c))
 		{
+			// DETECT UNICODE !!
 			ft_putchar((char)c);
 			if (line[cursor] != '\0')
 				moveline(line, &cursor, 1);
 			line[cursor++] = (char)c;
 		}
+		else
+			ft_printf("(%d)", c);
 	}
 	ft_makeraw(0);
 	ft_putchar('\n');

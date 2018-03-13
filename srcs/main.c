@@ -43,6 +43,9 @@ static void ft_readline(char *line, t_shell *shell)
 
 int main(int argc, char **argv, char **envp)
 {
+//	while (*argv++)
+//		ft_printf("%ju\n", ft_strlen(*argv));
+//	return (0);
 	t_shell	shell;
 	char	line[2048];
 	int		c;
@@ -60,6 +63,7 @@ int main(int argc, char **argv, char **envp)
 	else
 		promptf = ft_strdup("%S %{lred}%s %{lcyan}%s%{0} %{bold}%S%{0} ");*/
 	setlocale(LC_ALL, "");
+	ft_bzero(line, 2048);
 	while (shell.running)
 	{
 		ft_printf("%S %{lred}%s %{lcyan}%s%{0} %{bold}%S%{0} ", L"㋜", shell.user, shell.pwd, L"∴");
