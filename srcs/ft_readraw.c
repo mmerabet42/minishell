@@ -44,7 +44,9 @@ void		ft_makeraw(int setb)
 static void moveline(char *line, size_t *cursor, int direction)
 {
 	size_t	i;
-
+	
+	if (!direction && !*cursor)
+		return ;
 	i = (direction ? ft_strlen(line) : --(*cursor));
 	while (((direction == 0 && line[i])
 		|| (direction && i >= *cursor && i > 0)) && i < 2048)
@@ -80,7 +82,7 @@ int			ft_readraw(char *line, size_t size)
 	{
 		if (c == 3 || c == 4 || c == 13)
 			break ;
-		else if (c == 127 && cursor != 0)
+		else if (c == 127)
 			moveline(line, &cursor, 0);
 		else if (c == '\033')
 			movecursor(line, &cursor);
