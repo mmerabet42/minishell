@@ -15,22 +15,23 @@
 #include "ft_mem.h"
 #include "ft_printf.h"
 
-static char	*ctilde(char *str, char *homepwd, char **cmd)
+static char	*ctilde(int pos, char *homepwd, char **cmd)
 {
+	char	*str;
 	char	*cstr;
 
-	if (!str)
+	if (!(str = (pos == -1 ? ft_strdupl(*cmd) : ft_strndupl(*cmd, pos))))
 		return (NULL);
 	if (str[0] == '~' && str[1] != '~')
 	{
 		if ((cstr = ft_strjoin(homepwd, str + 1)))
 		{
-			*cmd += ft_strlen(str);
+			*cmd += (pos == -1 ? ft_strlen(*cmd) : (size_t)pos);
 			free(str);
 			return (cstr);
 		}
 	}
-	*cmd += ft_strlen(str);
+	*cmd += (pos == -1 ? ft_strlen(*cmd) : (size_t)pos);
 	return (str);
 }
 
@@ -47,10 +48,9 @@ static char	*checkarg(char **cmd, t_shell *shell)
 			++(*cmd);
 		str = ft_strjoin_clr(str, tld, 2);
 	}
-	else if ((pos = ft_strpbrk_pos(*cmd, " \t;\"'")) != -1 || 1)
+	else if ((pos = ft_strpbrkl_pos(*cmd, " \t;\"'")) != -1 || 1)
 	{
-		tld = ctilde((pos != -1 ? ft_strndup(*cmd, pos) : ft_strdup(*cmd)),
-			shell->homepwd, cmd);
+		tld = ctilde(pos, shell->homepwd, cmd);
 		str = ft_strjoin_clr(str, tld, 2);
 	}
 	if (**cmd != ' ' && **cmd != '\t' && **cmd != ';' && **cmd != '\0')

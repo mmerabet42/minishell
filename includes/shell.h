@@ -64,6 +64,7 @@ int				ft_addenv(char *name, char *value, t_shell *shell);
 t_shret			ft_access(char *filename, int tests);
 t_shret			ft_chdir(char *dirname, t_shell *shell);
 char			*ft_getcwd(char *pwd, size_t size);
+void			ft_getcursor(int *x, int *y);
 
 void			ft_makeraw(int setb);
 int				ft_readraw(char *line, size_t size);

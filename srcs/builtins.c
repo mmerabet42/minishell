@@ -20,18 +20,19 @@ t_shret	builtin_echo(int argc, char **argv, t_shell *shell)
 {
 	int		i;
 	int		n;
+	char	*l;
 
 	(void)shell;
-	i = 1;
+	i = 0;
 	n = 0;
 	if (argc > 1 && !ft_strcmp(argv[1], "-n") && ++i)
 		n = 1;
-	while (i < argc)
+	while (i++ < argc)
 	{
-		ft_putstr(argv[i]);
+		ft_putstr((l = ft_strdupk(argv[i])));
+		free(l);
 		if (i + 1 < argc)
 			ft_putchar(' ');
-		++i;
 	}
 	if (!n)
 		ft_putchar('\n');

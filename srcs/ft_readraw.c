@@ -21,24 +21,31 @@ static struct termios	g_origt;
 
 void		ft_makeraw(int setb)
 {
+	static int		isset;
 	struct termios	newt;
 
-	if (setb)
+	if (setb && !isset)
 	{
+		isset = 1;
 		tcgetattr(0, &g_origt);
 		ft_memcpy(&newt, &g_origt, sizeof(struct termios));
-		newt.c_iflag &= ~(IMAXBEL | IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR
+	/*	newt.c_iflag &= ~(IMAXBEL | IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR
 				| IGNCR | ICRNL | IXON);
-		newt.c_oflag &= ~OPOST;
 		newt.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
+		newt.c_oflag &= ~OPOST;
 		newt.c_cflag &= ~(CSIZE | PARENB);
+		newt.c_cflag &= ECHOE;
 		newt.c_cflag |= CS8;
+		newt.c_cc[VMIN] = 1;
+		newt.c_cc[VTIME] = 0;*/
+		newt.c_lflag &= ~(ICANON | ECHO | ISIG);
+		newt.c_iflag &= ~(ICRNL);
 		newt.c_cc[VMIN] = 1;
 		newt.c_cc[VTIME] = 0;
 		tcsetattr(0, TCSANOW, &newt);
 	}
-	else
-		tcsetattr(0, TCSANOW, &g_origt);
+	else if (isset)
+		tcsetattr((isset = 0), TCSANOW, &g_origt);
 }
 
 static void moveline(char *line, size_t *cursor, int direction)
@@ -94,8 +101,8 @@ int			ft_readraw(char *line, size_t size)
 				moveline(line, &cursor, 1);
 			line[cursor++] = (char)c;
 		}
-		else
-			ft_printf("(%d)", c);
+	//	else
+	//		ft_printf("(%d)", c);
 	}
 	ft_makeraw(0);
 	ft_putchar('\n');

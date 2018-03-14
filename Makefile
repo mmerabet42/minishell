@@ -17,7 +17,7 @@ CFLAGS		=	-Wall -Werror -Wextra
 LIBFTD		=	libft
 LIBFT		=	$(LIBFTD)/libft.a
 
-_NTS	=		main.c ft_getargs.c ft_getpaths.c ft_initshell.c \
+_NTS	=		main.c ft_getargs.c ft_getpaths.c ft_initshell.c ft_getcursor.c \
 				builtins.c ft_isbuiltin.c builtin_cd.c ft_env.c ft_readraw.c \
 
 SRCD		=	srcs/
