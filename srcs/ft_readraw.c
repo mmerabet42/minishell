@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 18:44:03 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/12 20:22:29 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/14 19:15:21 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,11 @@ static void moveline(char *line, size_t *cursor, int direction)
 		i += (direction ? -1 : 1);
 	}
 	if (direction)
-		ft_printf("%s\033[%dD", &line[*cursor + 1], ft_strlen(line) - *cursor - 1);
+		ft_printf("%s\033[%dD", &line[*cursor + 1],
+				ft_strlen(line) - *cursor - 1);
 	else
-		ft_printf("\033[1D%s \033[%dD", &line[*cursor], ft_strlen(line) - *cursor + 1);
+		ft_printf("\033[1D%s \033[%dD", &line[*cursor],
+				ft_strlen(line) - *cursor + 1);
 }
 
 static void	movecursor(char *line, size_t *cursor)
@@ -76,6 +78,27 @@ static void	movecursor(char *line, size_t *cursor)
 		ft_printf("\033[1D", --(*cursor));
 	else if (c == 'C' && *cursor < ft_strlen(line))
 		ft_printf("\033[1C", ++(*cursor));
+	else if (c == 'A' || c == 'B')
+	{
+		if (*cursor > 0)
+			ft_printf("\033[%dD\033[K", *cursor);
+		ft_strclr(line);
+		if (g_shell->history)
+		{
+			if (c == 'A' && g_shell->history->next)
+			{
+				g_shell->history = g_shell->history->next;
+				ft_strcpy(line, (char *)g_shell->history->content);
+			}
+			else if (c == 'B' && g_shell->history->parent)
+			{
+				g_shell->history = g_shell->history->parent;
+				ft_strcpy(line, (char *)g_shell->history->content);
+			}
+		}
+		ft_putstr(line);
+		*cursor = ft_strlen(line);
+	}
 }
 
 int			ft_readraw(char *line, size_t size)
@@ -93,16 +116,13 @@ int			ft_readraw(char *line, size_t size)
 			moveline(line, &cursor, 0);
 		else if (c == '\033')
 			movecursor(line, &cursor);
-		else if (ft_isprint(c))
+		else
 		{
-			// DETECT UNICODE !!
 			ft_putchar((char)c);
 			if (line[cursor] != '\0')
 				moveline(line, &cursor, 1);
 			line[cursor++] = (char)c;
 		}
-	//	else
-	//		ft_printf("(%d)", c);
 	}
 	ft_makeraw(0);
 	ft_putchar('\n');

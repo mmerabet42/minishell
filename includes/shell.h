@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:44:40 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/12 20:22:33 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/14 19:15:25 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ typedef struct	s_shell
 	char		**envp;
 	int			running:1;
 	t_list		*history;
-	pid_t		pid;
 }				t_shell;
 
 typedef t_shret	(*builtin_func)(int argc, char **argv, t_shell *shell);
@@ -81,7 +80,11 @@ char			*ft_strshret(t_shret shret);
 void			ft_initshell(char *name, t_shell *shell, char **envp);
 void			ft_delshell(t_shell *shell);
 
-void			ft_exec(char *filename, char **argv, char **envp, pid_t *pid);
+void			ft_addhistory(char *line);
+char			*ft_gethistory(void);
+
+void			ft_exec(char *filename, char **argv, char **envp);
+void			ft_exit(int code, const char *msg);
 
 t_shret			ft_isbuiltin(char *name, t_args *args, t_shell *shell);
 
@@ -91,5 +94,7 @@ t_shret			builtin_echo(int argc, char **argv, t_shell *shell);
 t_shret			builtin_exit(int argc, char **argv, t_shell *shell);
 t_shret			builtin_setenv(int argc, char **argv, t_shell *shell);
 t_shret			builtin_unsetenv(int argc, char **argv, t_shell *shell);
+
+extern t_shell	*g_shell;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:40:09 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/12 20:22:31 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/14 19:15:24 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void ft_readline(char *line, t_shell *shell)
 				ft_printf("%s: %s: %s\n", shell->name, ft_strshret(shret),
 					args.argv[0]);
 			else
-				ft_exec(fullpath, args.argv, shell->envp, &shell->pid);
+				ft_exec(fullpath, args.argv, shell->envp);
 		}
 		ft_delargs(&args);
 	}
@@ -51,26 +51,20 @@ int main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	ft_initshell("minishell", &shell, envp);
-/*	if (argc > 1)
-	{
-		promptf = ft_strrepstr_clr(ft_strdup(argv[1]), "@user", "%2$s");
-		promptf = ft_strrepstr_clr(promptf, "@pwd", "%3$s");
-		promptf = ft_strrepstr_clr(promptf, "@sign-jap", "%1$S");
-		promptf = ft_strrepstr_clr(promptf, "@sign-3dot", "%4$S");
-	}
-	else
-		promptf = ft_strdup("%S %{lred}%s %{lcyan}%s%{0} %{bold}%S%{0} ");*/
 	setlocale(LC_ALL, "");
 	ft_bzero(line, 2048);
 	while (shell.running)
 	{
 		ft_getcursor(&x, NULL);
 		if (x > 1)
-			ft_printf("%{invert/bold}%%%{0}\n");
+			ft_printf("%#{lgrey}%{bold/;0;0;0}%%%{0}\n");
 		ft_printf("%S %{lred}%s %{lcyan}%s%{0} %{bold}%S%{0} ", L"㋜", shell.user, shell.pwd, L"∴");
-		ft_bzero(line, ft_strlen(line));
-		if ((c = ft_readraw(line, 2048)) != 3 && c != 4)
+		ft_strclr(line);
+		if ((c = ft_readraw(line, 2048)) != 3 && c != 4 && line[0] != '\0')
+		{
+			ft_addhistory(ft_strdup(line));
 			ft_readline(line, &shell);
+		}
 		else if (c == 4)
 			ft_readline("exit", &shell);
 	}
