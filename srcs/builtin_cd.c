@@ -8,7 +8,8 @@ t_shret	ft_chdir(char *name, t_shell *shell)
 {
 	t_shret	acc;
 
-	if ((acc = ft_access(name, R_OK)) != SH_OK)
+	acc = SH_NFOUND;
+	if (!name || (acc = ft_access(name, R_OK)) != SH_OK)
 		return (acc);
 	else
 	{
@@ -25,10 +26,17 @@ t_shret	ft_chdir(char *name, t_shell *shell)
 t_shret	builtin_cd(int argc, char **argv, t_shell *shell)
 {
 	t_shret	acc;
+	char	*name;
 
 	if (argc == 1 && (acc = ft_chdir(shell->homepwd, shell)) != SH_OK)
 		ft_printf("%s: %s: %s\n", argv[0], ft_strshret(acc), shell->homepwd);
-	else if (argc > 1 && (acc = ft_chdir(argv[1], shell)) != SH_OK)
-		ft_printf("%s: %s: %s\n", argv[0], ft_strshret(acc), argv[1]);
+	else if (argc > 1)
+	{
+		name = argv[1];
+		if (!ft_strcmp(argv[1], "-"))
+			name = ft_getenv("OLDPWD", shell);
+		if ((acc = ft_chdir(name, shell)) != SH_OK)
+			ft_printf("%s: %s: %s\n", argv[0], ft_strshret(acc), argv[1]);
+	}
 	return (SH_ESUCCESS);
 }
