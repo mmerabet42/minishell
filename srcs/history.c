@@ -17,13 +17,14 @@ t_shell	*g_shell;
 
 void	ft_addhistory(char *line)
 {
-	if (g_shell->history)
-	{
-		g_shell->history = ft_lstparent(g_shell->history);
-		if (!ft_strcmp(g_shell->history->content, line))
-			return ;
-	}
-	ft_lstpushfront(&g_shell->history, ft_lstcreate(line, ft_strlen(line)));
+	t_list	*lst;
+
+	if (g_shell->history && !ft_strcmp(line, g_shell->history->content))
+		return ;
+	lst = ft_lstnew(line, ft_strlen(line) + 1);
+	if ((lst->next = ft_lstparent(g_shell->history)))
+		lst->next->parent = lst;
+	g_shell->history = lst;
 }
 
 char	*ft_gethistory(void)

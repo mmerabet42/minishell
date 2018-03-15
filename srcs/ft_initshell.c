@@ -15,7 +15,7 @@
 #include "ft_mem.h"
 #include "ft_printf.h"
 #include <unistd.h>
-#include <sys/wait.h>
+#include <sys/signal.h>
 
 t_shell		*g_shell;
 
@@ -34,10 +34,10 @@ void		ft_initshell(char *name, t_shell *shell, char **envp)
 {
 	int	i;
 
-	if (!shell)
+	if (!shell || !(shell->paths = ft_getpaths(envp)))
 		return ;
-	shell->paths = ft_getpaths(envp);
 	shell->running = 1;
+	shell->history = NULL;
 	shell->envp = (char **)malloc(sizeof(char *) * (ft_tabsize(envp) + 1));
 	shell->name = name;
 	i = 0;

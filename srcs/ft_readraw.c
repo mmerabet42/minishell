@@ -78,27 +78,25 @@ static void	movecursor(char *line, size_t *cursor)
 		ft_printf("\033[1D", --(*cursor));
 	else if (c == 'C' && *cursor < ft_strlen(line))
 		ft_printf("\033[1C", ++(*cursor));
-	else if (c == 'A' || c == 'B')
+/*	else if ((c == 'A' || c == 'B') && g_shell->history)
 	{
 		if (*cursor > 0)
 			ft_printf("\033[%dD\033[K", *cursor);
-		ft_strclr(line);
-		if (g_shell->history)
+		if (!g_shell->history->parent)
 		{
-			if (c == 'A' && g_shell->history->next)
-			{
-				g_shell->history = g_shell->history->next;
-				ft_strcpy(line, (char *)g_shell->history->content);
-			}
-			else if (c == 'B' && g_shell->history->parent)
-			{
-				g_shell->history = g_shell->history->parent;
-				ft_strcpy(line, (char *)g_shell->history->content);
-			}
+			
 		}
+		ft_strclr(line);
+		if (c == 'A' && g_shell->history->next)
+			g_shell->history = g_shell->history->next;
+		if (c == 'B' && g_shell->history->parent)
+			g_shell->history = g_shell->history->parent;
+		else if (c == 'B')
+			ft_strclr(line);
+		ft_strcpy(line, (char *)g_shell->history->content);
 		ft_putstr(line);
 		*cursor = ft_strlen(line);
-	}
+	}*/
 }
 
 int			ft_readraw(char *line, size_t size)

@@ -12,6 +12,7 @@
 
 #include "shell.h"
 #include "ft_io.h"
+#include <sys/wait.h>
 
 void	ft_exec(char *filename, char **argv, char **envp)
 {

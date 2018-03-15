@@ -41,6 +41,8 @@ static void ft_readline(char *line, t_shell *shell)
 	}
 }
 
+t_shell	*g_shell;
+
 int main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
@@ -62,7 +64,7 @@ int main(int argc, char **argv, char **envp)
 		ft_strclr(line);
 		if ((c = ft_readraw(line, 2048)) != 3 && c != 4 && line[0] != '\0')
 		{
-			ft_addhistory(ft_strdup(line));
+		//	ft_addhistory(line);
 			ft_readline(line, &shell);
 		}
 		else if (c == 4)
