@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 20:27:14 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/12 18:35:15 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/15 21:20:44 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "ft_str.h"
 #include "ft_mem.h"
 #include "ft_printf.h"
+
+t_shell	*g_shell;
 
 static char	*ctilde(int pos, char *homepwd, char **cmd)
 {
@@ -35,7 +37,7 @@ static char	*ctilde(int pos, char *homepwd, char **cmd)
 	return (str);
 }
 
-static char	*checkarg(char **cmd, t_shell *shell)
+static char	*checkarg(char **cmd)
 {
 	static char	*str;
 	char		*tld;
@@ -50,7 +52,7 @@ static char	*checkarg(char **cmd, t_shell *shell)
 	}
 	else if ((pos = ft_strpbrkl_pos(*cmd, " \t;\"'")) != -1 || 1)
 	{
-		tld = ctilde(pos, shell->homepwd, cmd);
+		tld = ctilde(pos, g_shell->homepwd, cmd);
 		str = ft_strjoin_clr(str, tld, 2);
 	}
 	if (**cmd != ' ' && **cmd != '\t' && **cmd != ';' && **cmd != '\0')
@@ -60,7 +62,7 @@ static char	*checkarg(char **cmd, t_shell *shell)
 	return (tld);
 }
 
-char		*ft_getargs(char *cmd, t_args *args, t_shell *shell)
+char		*ft_getargs(char *cmd, t_args *args)
 {
 	char	*str;
 
@@ -70,7 +72,7 @@ char		*ft_getargs(char *cmd, t_args *args, t_shell *shell)
 		++cmd;
 	while (*cmd && *cmd != ';')
 	{
-		if ((str = checkarg(&cmd, shell)))
+		if ((str = checkarg(&cmd)))
 			args->argv = ft_memjoin_clr(args->argv,
 					sizeof(char *) * args->argc++, &str, sizeof(char *));
 		while (*cmd == ' ' || *cmd == '\t')

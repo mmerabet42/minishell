@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 19:09:06 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/12 18:39:56 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/15 21:21:38 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,12 @@ static t_builtin	g_builtins[] = {
 	{"cd", builtin_cd}, {"echo", builtin_echo}, {"setenv", builtin_setenv},
 	{"unsetenv", builtin_unsetenv}, {"env", builtin_env}, {"exit", builtin_exit}
 };
+
 static size_t		g_builtins_size = sizeof(g_builtins) / sizeof(t_builtin);
 
-t_shret	ft_isbuiltin(char *filename, t_args *args, t_shell *shell)
+t_shell	*g_shell;
+
+t_shret	ft_isbuiltin(char *filename, t_args *args)
 {
 	size_t	i;
 
@@ -27,7 +30,7 @@ t_shret	ft_isbuiltin(char *filename, t_args *args, t_shell *shell)
 	while (i < g_builtins_size)
 	{
 		if (!ft_strcmp(filename, g_builtins[i].name))
-			return (g_builtins[i].func(args->argc, args->argv, shell));
+			return (g_builtins[i].func(args->argc, args->argv));
 		++i;
 	}
 	return (SH_NFOUND);

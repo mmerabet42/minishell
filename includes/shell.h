@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:44:40 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/14 19:15:25 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/15 22:01:50 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,11 @@ typedef struct	s_shell
 	char		**envp;
 	int			running:1;
 	t_list		*history;
+	int			ihis;
+	char		*cline;
 }				t_shell;
 
-typedef t_shret	(*builtin_func)(int argc, char **argv, t_shell *shell);
+typedef t_shret	(*builtin_func)(int argc, char **argv);
 
 typedef struct	s_builtin
 {
@@ -52,16 +54,16 @@ typedef struct	s_builtin
 	builtin_func	func;
 }				t_builtin;
 
-char			*ft_getargs(char *cmd, t_args *args, t_shell *shell);
+char			*ft_getargs(char *cmd, t_args *args);
 void			ft_delargs(t_args *args);
 
-char			*ft_getenv(char *name, t_shell *shell);
-void			ft_setenv(char *name, char *value, t_shell *shell);
-void			ft_unsetenv(char *name, t_shell *shell);
-int				ft_addenv(char *name, char *value, t_shell *shell);
+char			*ft_getenv(char *name, char **envp);
+void			ft_setenv(char *name, char *value, char ***envp);
+void			ft_unsetenv(char *name, char ***envp);
+int				ft_addenv(char *name, char *value, char ***envp);
 
 t_shret			ft_access(char *filename, int tests);
-t_shret			ft_chdir(char *dirname, t_shell *shell);
+t_shret			ft_chdir(char *dirname);
 char			*ft_getcwd(char *pwd, size_t size);
 void			ft_getcursor(int *x, int *y);
 
@@ -71,29 +73,28 @@ int				ft_readraw(char *line, size_t size);
 char			**ft_getpaths(char **envp);
 
 t_shret			ft_getfullpath(char *fname,
-								t_shell *shell,
 								char *fullpath,
 								size_t size);
 
 char			*ft_strshret(t_shret shret);
 
-void			ft_initshell(char *name, t_shell *shell, char **envp);
-void			ft_delshell(t_shell *shell);
+void			shell_begin(char *name, char **envp);
+void			shell_end(void);
 
 void			ft_addhistory(char *line);
-char			*ft_gethistory(void);
+char			*ft_gethistory(int i);
 
 void			ft_exec(char *filename, char **argv, char **envp);
 void			ft_exit(int code, const char *msg);
 
-t_shret			ft_isbuiltin(char *name, t_args *args, t_shell *shell);
+t_shret			ft_isbuiltin(char *name, t_args *args);
 
-t_shret			builtin_cd(int argc, char **argv, t_shell *shell);
-t_shret			builtin_env(int argc, char **argv, t_shell *shell);
-t_shret			builtin_echo(int argc, char **argv, t_shell *shell);
-t_shret			builtin_exit(int argc, char **argv, t_shell *shell);
-t_shret			builtin_setenv(int argc, char **argv, t_shell *shell);
-t_shret			builtin_unsetenv(int argc, char **argv, t_shell *shell);
+t_shret			builtin_cd(int argc, char **argv);
+t_shret			builtin_env(int argc, char **argv);
+t_shret			builtin_echo(int argc, char **argv);
+t_shret			builtin_exit(int argc, char **argv);
+t_shret			builtin_setenv(int argc, char **argv);
+t_shret			builtin_unsetenv(int argc, char **argv);
 
 extern t_shell	*g_shell;
 

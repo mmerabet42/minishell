@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 19:09:27 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/10 19:11:15 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/15 21:46:12 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "ft_str.h"
 #include "ft_mem.h"
 #include <unistd.h>
+
+t_shell	*g_shell;
 
 char	**ft_getpaths(char **envp)
 {
@@ -37,29 +39,31 @@ t_shret	ft_access(char *filename, int tests)
 	return (SH_NEXIST);
 }
 
-t_shret	ft_getfullpath(char *fname, t_shell *shell, char *fullpath, size_t size)
+t_shret	ft_getfullpath(char *fname, char *fullpath, size_t size)
 {
 	t_shret	shret;
 	char	**it;
 	
 	if (fname[0] == '.' && fname[1] == '/' && ft_memset(fullpath, '\0', size))
 	{
-		ft_strcat(ft_strcatc(ft_strcat(fullpath, shell->pwd), '/'), fname);
+		ft_strcat(ft_strcatc(ft_strcat(fullpath, g_shell->pwd), '/'), fname);
 		return (ft_access(fullpath, X_OK));
 	}
 	shret = SH_NFOUND;
-	it = shell->paths;
-	while (*it)
+	if ((it = g_shell->paths))
 	{
-		ft_bzero(fullpath, size);
-		ft_strcat(ft_strcatc(ft_strcat(fullpath, *it), '/'), fname);
-		if (!access(fullpath, F_OK))
+		while (*it)
 		{
-			if (!access(fullpath, X_OK))
-				return (SH_OK);
-			shret = SH_ADENIED;
+			ft_bzero(fullpath, size);
+			ft_strcat(ft_strcatc(ft_strcat(fullpath, *it), '/'), fname);
+			if (!access(fullpath, F_OK))
+			{
+				if (!access(fullpath, X_OK))
+					return (SH_OK);
+				shret = SH_ADENIED;
+			}
+			++it;
 		}
-		++it;
 	}
 	return (shret);
 }

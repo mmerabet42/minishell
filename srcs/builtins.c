@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 19:29:29 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/12 18:41:11 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/15 22:01:48 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@
 #include "ft_mem.h"
 #include "ft_printf.h"
 
-t_shret	builtin_echo(int argc, char **argv, t_shell *shell)
+t_shell	*g_shell;
+
+t_shret	builtin_echo(int argc, char **argv)
 {
 	int		i;
 	int		n;
 	char	*l;
 
-	(void)shell;
 	i = 0;
 	n = 0;
 	if (argc > 1 && !ft_strcmp(argv[1], "-n") && ++i)
@@ -39,7 +40,7 @@ t_shret	builtin_echo(int argc, char **argv, t_shell *shell)
 	return (SH_ESUCCESS);
 }
 
-t_shret	builtin_setenv(int argc, char **argv, t_shell *shell)
+t_shret	builtin_setenv(int argc, char **argv)
 {
 	int		i;
 	char	*c;
@@ -52,48 +53,48 @@ t_shret	builtin_setenv(int argc, char **argv, t_shell *shell)
 		{
 			*c = '\0';
 			value = c + 1;
-			ft_setenv(argv[i], value, shell);
+			ft_setenv(argv[i], value, &g_shell->envp);
 		}
 		else if (i + 1 < argc)
 		{
-			ft_setenv(argv[i], argv[i + 1], shell);
+			ft_setenv(argv[i], argv[i + 1], &g_shell->envp);
 			++i;
 		}
 		++i;
 	}
 	if (ft_strcmp(argv[1], "HOME"))
-		shell->homepwd = ft_getenv("HOME", shell);
+		g_shell->homepwd = ft_getenv("HOME", g_shell->envp);
 	else if (ft_strcmp(argv[1], "USER"))
-		shell->user = ft_getenv("USER", shell);
+		g_shell->user = ft_getenv("USER", g_shell->envp);
 	return (SH_ESUCCESS);
 }
 
-t_shret	builtin_unsetenv(int argc, char **argv, t_shell *shell)
+t_shret	builtin_unsetenv(int argc, char **argv)
 {
 	int	i;
 
-	i = 0;
+	i = 1;
 	while (i < argc)
-		ft_unsetenv(argv[++i], shell);
+		ft_unsetenv(argv[i++], &g_shell->envp);
 	return (SH_ESUCCESS);
 }
 
-t_shret	builtin_env(int argc, char **argv, t_shell *shell)
+t_shret	builtin_env(int argc, char **argv)
 {
 	char	**it;
 
 	(void)argc;
 	(void)argv;
-	it = shell->envp;
+	it = g_shell->envp;
 	while (*it)
 		ft_putendl(*it++);
 	return (SH_ESUCCESS);
 }
 
-t_shret	builtin_exit(int argc, char **argv, t_shell *shell)
+t_shret	builtin_exit(int argc, char **argv)
 {
 	(void)argc;
 	(void)argv;
-	shell->running = 0;
+	g_shell->running = 0;
 	return (SH_ESUCCESS);
 }

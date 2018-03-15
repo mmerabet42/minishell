@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 18:44:03 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/14 19:15:21 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/15 21:15:49 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,29 @@ static void moveline(char *line, size_t *cursor, int direction)
 				ft_strlen(line) - *cursor + 1);
 }
 
+static void	movehistory(char c, char *line, size_t *cursor)
+{
+	char	*str;
+
+	if (*cursor > 0)
+		ft_printf("\033[%dD\033[K", *cursor);
+	if (g_shell->ihis == -1)
+		g_shell->cline = ft_strdup(line);
+	ft_strclr(line);
+	if (c == 'A' && g_shell->ihis < (int)ft_lstsize(g_shell->history) - 1)
+		++g_shell->ihis;
+	else if (c == 'B' && g_shell->ihis > -1)
+		--g_shell->ihis;
+	str = ft_gethistory(g_shell->ihis);
+	ft_putstr(ft_strcpy(line, (str = ft_gethistory(g_shell->ihis))));
+	if (str == g_shell->cline)
+	{
+		free(str);
+		g_shell->cline = NULL;
+	}
+	*cursor = ft_strlen(line);
+}
+
 static void	movecursor(char *line, size_t *cursor)
 {
 	int	c;
@@ -78,25 +101,8 @@ static void	movecursor(char *line, size_t *cursor)
 		ft_printf("\033[1D", --(*cursor));
 	else if (c == 'C' && *cursor < ft_strlen(line))
 		ft_printf("\033[1C", ++(*cursor));
-/*	else if ((c == 'A' || c == 'B') && g_shell->history)
-	{
-		if (*cursor > 0)
-			ft_printf("\033[%dD\033[K", *cursor);
-		if (!g_shell->history->parent)
-		{
-			
-		}
-		ft_strclr(line);
-		if (c == 'A' && g_shell->history->next)
-			g_shell->history = g_shell->history->next;
-		if (c == 'B' && g_shell->history->parent)
-			g_shell->history = g_shell->history->parent;
-		else if (c == 'B')
-			ft_strclr(line);
-		ft_strcpy(line, (char *)g_shell->history->content);
-		ft_putstr(line);
-		*cursor = ft_strlen(line);
-	}*/
+	else if ((c == 'A' || c == 'B') && g_shell->history)
+		movehistory(c, line, cursor);
 }
 
 int			ft_readraw(char *line, size_t size)

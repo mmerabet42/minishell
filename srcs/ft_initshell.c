@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 19:09:16 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/14 18:24:58 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/15 21:52:07 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,65 +17,67 @@
 #include <unistd.h>
 #include <sys/signal.h>
 
-t_shell		*g_shell;
-
-char		*ft_getcwd(char *pwd, size_t size)
-{
-	ft_bzero(pwd, size);
-	return (getcwd(pwd, size));
-}
+extern t_shell	*g_shell;
 
 static void	sign_handler(int sign)
 {
 	(void)sign;
 }
 
-void		ft_initshell(char *name, t_shell *shell, char **envp)
+void		initenvp(char **envp)
 {
 	int	i;
 
-	if (!shell || !(shell->paths = ft_getpaths(envp)))
-		return ;
-	shell->running = 1;
-	shell->history = NULL;
-	shell->envp = (char **)malloc(sizeof(char *) * (ft_tabsize(envp) + 1));
-	shell->name = name;
+	if (!(g_shell->envp =
+				(char **)malloc(sizeof(char *) * (ft_tabsize(envp) + 1))))
+		ft_exit(EXIT_FAILURE, "Failed to copy 'envp'. Exiting");
 	i = 0;
 	while (*envp)
 	{
 		if (ft_strmatch(*envp, "USER=*"))
-			shell->user = ft_strchr(*envp, '=') + 1;
+			g_shell->user = ft_strchr(*envp, '=') + 1;
 		else if (ft_strmatch(*envp, "HOME=*"))
-			shell->homepwd = ft_strchr(*envp, '=') + 1;
-		if (shell->envp)
-			shell->envp[i++] = ft_strdup(*envp);
+			g_shell->homepwd = ft_strchr(*envp, '=') + 1;
+		if (g_shell->envp)
+			g_shell->envp[i++] = ft_strdup(*envp);
 		++envp;
 	}
-	if (shell->envp)
-		shell->envp[i] = NULL;
-	ft_getcwd(shell->pwd, 2048);
-	if (signal(SIGINT, sign_handler) == SIG_ERR)
-		ft_exit(EXIT_FAILURE, "Failed to catch 'SIGINT' signal. Exiting.");
-	g_shell = shell;
+	if (g_shell->envp)
+		g_shell->envp[i] = NULL;
 }
 
-void	ft_delshell(t_shell *shell)
+void		shell_begin(char *name, char **envp)
+{
+	if (!(g_shell = (t_shell *)ft_memalloc(sizeof(t_shell))))
+		ft_exit(EXIT_FAILURE, "Failed to begin shell. Exiting");
+	if (!(g_shell->paths = ft_getpaths(envp)))
+		return ;
+	g_shell->name = name;
+	g_shell->running = 1;
+	g_shell->ihis = -1;
+	ft_getcwd(g_shell->pwd, 2048);
+	if (signal(SIGINT, sign_handler) == SIG_ERR)
+		ft_exit(EXIT_FAILURE, "Failed to catch 'SIGINT' signal. Exiting.");
+	initenvp(envp);
+}
+
+void	shell_end(void)
 {
 	char	**ptr;
 
-	if ((ptr = shell->paths))
+	if ((ptr = g_shell->paths))
 	{
 		while (*ptr)
 			free(*ptr++);
 		free(*ptr);
 	}
-	free(shell->paths);
-	if ((ptr = shell->envp))
+	free(g_shell->paths);
+	if ((ptr = g_shell->envp))
 	{
 		while (*ptr)
 			free(*ptr++);
 		free(*ptr);
 	}
-	free(shell->envp);
-	ft_bzero(shell, sizeof(t_shell));
+	free(g_shell->envp);
+	ft_bzero(g_shell, sizeof(t_shell));
 }
