@@ -20,6 +20,8 @@ void	ft_addhistory(char *line)
 	t_list	*lst;
 
 	g_shell->ihis = -1;
+	free(g_shell->cline);
+	g_shell->cline = NULL;
 	if ((g_shell->history && !ft_strcmp(line, g_shell->history->content))
 			|| !(lst = ft_lstnew(line, ft_strlen(line) + 1)))
 		return ;

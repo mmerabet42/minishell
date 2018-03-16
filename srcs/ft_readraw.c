@@ -82,11 +82,10 @@ static void	movehistory(char c, char *line, size_t *cursor)
 		++g_shell->ihis;
 	else if (c == 'B' && g_shell->ihis > -1)
 		--g_shell->ihis;
-	str = ft_gethistory(g_shell->ihis);
 	ft_putstr(ft_strcpy(line, (str = ft_gethistory(g_shell->ihis))));
 	if (str == g_shell->cline)
 	{
-		free(str);
+		free(g_shell->cline);
 		g_shell->cline = NULL;
 	}
 	*cursor = ft_strlen(line);

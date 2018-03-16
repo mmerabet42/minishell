@@ -46,6 +46,12 @@ typedef struct	s_shell
 	char		*cline;
 }				t_shell;
 
+typedef struct	s_opt
+{
+	int			n;
+	char		**ptr;
+}				t_opt;
+
 typedef t_shret	(*builtin_func)(int argc, char **argv);
 
 typedef struct	s_builtin
@@ -66,6 +72,7 @@ t_shret			ft_access(char *filename, int tests);
 t_shret			ft_chdir(char *dirname);
 char			*ft_getcwd(char *pwd, size_t size);
 void			ft_getcursor(int *x, int *y);
+char			ft_getopt(char ***argv, const char *options, t_opt *opt);
 
 void			ft_makeraw(int setb);
 int				ft_readraw(char *line, size_t size);

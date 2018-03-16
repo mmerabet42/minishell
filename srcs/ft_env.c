@@ -99,7 +99,7 @@ void	ft_unsetenv(char *name, char ***envp)
 	if (!envp || !*envp || !(ename = ft_getenv(name, *envp)))
 		return ;
 	else if (!(envpl = (char **)malloc(sizeof(char *)
-					* (ft_tabsize(*envp) + 1))))
+					* (ft_tabsize(*envp)))))
 		return ;
 	ename -= ft_strlen(name) + 1;
 	i = 0;
@@ -114,7 +114,7 @@ void	ft_unsetenv(char *name, char ***envp)
 			envpl[(ename ? i : i - 1)] = (*envp)[i];
 		++i;
 	}
-	(*envp)[i - 1] = NULL;
+	envpl[i - 1] = NULL;
 	free((*envp));
 	*envp = envpl;
 }

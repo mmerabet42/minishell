@@ -45,6 +45,18 @@ static void ft_readline(char *line)
 
 int	main(int argc, char **argv, char **envp)
 {
+	char	c;
+	t_opt	opt;
+
+	while ((c = ft_getopt(&argv, "l", &opt)) != '\0')
+	{
+		if (c == 'l')
+		{
+			
+		}
+	}
+
+	return (0);
 	char	line[2048];
 	int		c;
 	int		x;

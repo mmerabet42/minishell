@@ -17,9 +17,9 @@ CFLAGS		=	-Wall -Werror -Wextra -g -fsanitize=address
 LIBFTD		=	libft
 LIBFT		=	$(LIBFTD)/libft.a
 
-_NTS	=		main.c ft_getargs.c ft_getpaths.c ft_initshell.c \
+_NTS	=		main.c ft_getargs.c ft_getpaths.c shell_begin.c \
 				ft_getcursor.c builtins.c ft_isbuiltin.c builtin_cd.c ft_env.c \
-				ft_readraw.c ft_exec.c history.c \
+				ft_readraw.c ft_exec.c history.c ft_getopt.c \
 
 SRCD		=	srcs/
 ICLD		=	-Iincludes -I$(LIBFTD)/includes

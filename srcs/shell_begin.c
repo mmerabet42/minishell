@@ -24,7 +24,7 @@ static void	sign_handler(int sign)
 	(void)sign;
 }
 
-void		initenvp(char **envp)
+static void	initenvp(char **envp)
 {
 	int	i;
 
@@ -38,12 +38,10 @@ void		initenvp(char **envp)
 			g_shell->user = ft_strchr(*envp, '=') + 1;
 		else if (ft_strmatch(*envp, "HOME=*"))
 			g_shell->homepwd = ft_strchr(*envp, '=') + 1;
-		if (g_shell->envp)
-			g_shell->envp[i++] = ft_strdup(*envp);
+		g_shell->envp[i++] = ft_strdup(*envp);
 		++envp;
 	}
-	if (g_shell->envp)
-		g_shell->envp[i] = NULL;
+	g_shell->envp[i] = NULL;
 }
 
 void		shell_begin(char *name, char **envp)
@@ -61,23 +59,26 @@ void		shell_begin(char *name, char **envp)
 	initenvp(envp);
 }
 
-void	shell_end(void)
+static void	delhistory(void *content, size_t content_size)
+{
+	(void)content_size;
+	free(content);
+}
+
+void		shell_end(void)
 {
 	char	**ptr;
 
 	if ((ptr = g_shell->paths))
-	{
 		while (*ptr)
 			free(*ptr++);
-		free(*ptr);
-	}
 	free(g_shell->paths);
 	if ((ptr = g_shell->envp))
-	{
 		while (*ptr)
 			free(*ptr++);
-		free(*ptr);
-	}
 	free(g_shell->envp);
-	ft_bzero(g_shell, sizeof(t_shell));
+	free(g_shell->cline);
+	ft_lstdel(&g_shell->history, delhistory);
+	free(g_shell);
+	g_shell = NULL;
 }
