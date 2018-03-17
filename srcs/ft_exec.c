@@ -13,6 +13,7 @@
 #include "shell.h"
 #include "ft_io.h"
 #include "ft_mem.h"
+#include "ft_printf.h"
 #include <sys/wait.h>
 
 void	ft_exec(char *filename, char **argv, char **envp)
@@ -32,6 +33,19 @@ void	ft_exit(int code, const char *msg)
 {
 	if (msg)
 		ft_putstr(msg);
+	exit(code);
+}
+
+void	ft_exitf(int code, const char *msgf, ...)
+{
+	va_list	vp;
+
+	if (msgf)
+	{
+		va_start(vp, msgf);
+		ft_vprintf(msgf, vp);
+		va_end(vp);
+	}
 	exit(code);
 }
 

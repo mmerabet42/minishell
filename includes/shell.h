@@ -16,6 +16,11 @@
 # include <unistd.h>
 # include "ft_list.h"
 
+# define DLM_ARG "_ \t"
+# define DLM_INS ";>"
+# define DLM_FARG "\"'"
+# define DLM_ALL DLM_ARG DLM_INS DLM_FARG
+
 typedef enum	e_shret
 {
 	SH_ADENIED, SH_NFOUND, SH_NEXIST, SH_OK, SH_NONE, SH_EFAIL, SH_ESUCCESS
@@ -93,6 +98,7 @@ char			*ft_gethistory(int i);
 
 void			ft_exec(char *filename, char **argv, char **envp);
 void			ft_exit(int code, const char *msg);
+void			ft_exitf(int code, const char *msgf, ...);
 
 t_shret			ft_isbuiltin(char *name, t_args *args);
 

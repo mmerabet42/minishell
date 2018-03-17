@@ -29,6 +29,8 @@ static void ft_readline(char *line)
 	ft_bzero(&args, sizeof(t_args));
 	while ((line = ft_getargs(line, &args)))
 	{
+		if (*line != '\0')
+			++line;
 		if (args.argc >= 1
 				&& ft_isbuiltin(args.argv[0], &args) == SH_NFOUND)
 		{
@@ -45,18 +47,6 @@ static void ft_readline(char *line)
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	c;
-	t_opt	opt;
-
-	while ((c = ft_getopt(&argv, "l", &opt)) != '\0')
-	{
-		if (c == 'l')
-		{
-			
-		}
-	}
-
-	return (0);
 	char	line[2048];
 	int		c;
 	int		x;
