@@ -16,7 +16,7 @@
 # include <unistd.h>
 # include "ft_list.h"
 
-# define DLM_ARG "_ \t"
+# define DLM_ARG " \t"
 # define DLM_INS ";>"
 # define DLM_FARG "\"'"
 # define DLM_ALL DLM_ARG DLM_INS DLM_FARG

@@ -45,8 +45,60 @@ static void ft_readline(char *line)
 	}
 }
 
+#include <fcntl.h>
+#include <string.h>
+#include <errno.h>
+#include <sys/wait.h>
+
 int	main(int argc, char **argv, char **envp)
 {
+	pid_t	pid;
+	int		fd[2];
+	char	**ptr = argv++;
+	int		i = 0;
+
+	while (*ptr)
+	{
+		if (ft_strequ(*ptr, "|"))
+		{
+			++ptr;
+			argv[i - 1] = NULL;
+			break;
+		}
+		++i;
+		++ptr;
+	}
+	if (pipe(fd) == -1)
+		ft_exit(0, "Failed pipe operation\n");
+	if (!(pid = fork()))
+	{
+		close(fd[0]);
+		dup2(fd[1], 1);
+		execvp(*argv, argv);
+		exit(0);
+	//	close(fd[1]);
+	}
+	else
+	{
+		close(fd[1]);
+/*		int	len;
+		char	*linep;
+		while ((len = get_next_line(0, &linep)) >= 0)
+		{
+			ft_printf("INPUT:\t'%s'\n", linep);
+			free(linep);
+		}*/
+		if (!(pid = fork()))
+		{
+			dup2(fd[0], 0);
+			execvp(*ptr, ptr);
+			exit(0);
+		}
+		else
+			wait(NULL);
+	//	close(fd[0]);
+	}
+	return (0);
 	char	line[2048];
 	int		c;
 	int		x;
