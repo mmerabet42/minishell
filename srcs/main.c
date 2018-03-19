@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:40:09 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/19 18:27:04 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/19 21:02:49 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,28 @@ static void ft_readline(char *line)
 
 int	main(int argc, char **argv, char **envp)
 {
+/*	char	**args;
+	int	ret;
+	t_opt	opt;
+	int	i;
+
+	args = argv + 1;
+	while ((ret = ft_getopt(&args, "lau.0St.1s.1", &opt)) != OPT_END)
+	{
+		if (ret == OPT_UNKNOWN)
+			ft_printf("Unknown option : %c\n", opt.c);
+		else
+			ft_printf("%d -> Option : %c %d\n", ret, opt.c, opt.n);
+		if (opt.n > 0)
+		{
+			i = 0;
+			while (i < opt.n)
+				ft_printf("Argument: '%s'\n", opt.ptr[i++]);
+		}
+	}
+	while (*args)
+		ft_printf("End argument: '%s'\n", *args++);
+	return (0);*/
 /*	pid_t	pid;
 	int		fd[2];
 	char	**ptr = argv++;

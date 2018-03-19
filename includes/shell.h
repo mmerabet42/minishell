@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:44:40 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/19 18:03:33 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/19 21:02:53 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ typedef enum	e_shret
 	SH_ADENIED, SH_NFOUND, SH_NEXIST, SH_OK, SH_NONE, SH_EFAIL, SH_ESUCCESS
 }				t_shret;
 
-typedef enum	e_artype
+typedef enum	e_optret
 {
-	AR_NONE, AR_QUOTE, AR_DQUOTE
-}				t_artype;
+	OPT_END, OPT_UNKNOWN, OPT_ALONE, OPT_OK, OPT_MISSING
+}				t_optret;
 
 typedef struct	s_args
 {
@@ -53,6 +53,7 @@ typedef struct	s_shell
 
 typedef struct	s_opt
 {
+	char		c;
 	int			n;
 	char		**ptr;
 }				t_opt;
@@ -77,7 +78,7 @@ t_shret			ft_access(char *filename, int tests);
 t_shret			ft_chdir(char *dirname);
 char			*ft_getcwd(char *pwd, size_t size);
 void			ft_getcursor(int *x, int *y);
-char			ft_getopt(char ***argv, const char *options, t_opt *opt);
+int				ft_getopt(char ***argv, const char *options, t_opt *opt);
 
 void			ft_makeraw(int setb);
 int				ft_readraw(char *line, size_t size);
