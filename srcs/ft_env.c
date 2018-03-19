@@ -27,7 +27,7 @@ int		ft_putenv(char *name, char *value, char ***envp)
 {
 	size_t	len;
 
-	if (!envp || !*envp || ft_getenv(name, *envp))
+	if (!envp || !*envp || !name || !value || ft_getenv(name, *envp))
 		return (0);
 	len = ft_tabsize(*envp);
 	if (!((*envp)[len] = ft_envitize(name, value)))
@@ -44,7 +44,7 @@ char	*ft_getenv(char *name, char **envp)
 	char	*ename;
 	char	**it;
 
-	if (!envp || !(ename = ft_strnew(ft_strlen(name) + 2)))
+	if (!envp || !name || !(ename = ft_strnew(ft_strlen(name) + 2)))
 		return (NULL);
 	ft_strcat(ename, name);
 	ft_strcat(ename, "=*");
@@ -68,7 +68,7 @@ void	ft_setenv(char *name, char *value, char ***envp)
 	char	**it;
 	size_t	len;
 
-	if (!envp || !*envp)
+	if (!envp || !*envp || !name || !value)
 		return ;
 	else if (!(ename = ft_getenv(name, *envp)))
 	{
@@ -96,7 +96,7 @@ void	ft_unsetenv(char *name, char ***envp)
 	char	**envpl;
 	int		i;
 
-	if (!envp || !*envp || !(ename = ft_getenv(name, *envp)))
+	if (!envp || !*envp || !name || !(ename = ft_getenv(name, *envp)))
 		return ;
 	else if (!(envpl = (char **)malloc(sizeof(char *)
 					* (ft_tabsize(*envp)))))

@@ -52,7 +52,7 @@ static void ft_readline(char *line)
 
 int	main(int argc, char **argv, char **envp)
 {
-	pid_t	pid;
+/*	pid_t	pid;
 	int		fd[2];
 	char	**ptr = argv++;
 	int		i = 0;
@@ -76,18 +76,11 @@ int	main(int argc, char **argv, char **envp)
 		dup2(fd[1], 1);
 		execvp(*argv, argv);
 		exit(0);
-	//	close(fd[1]);
+		close(fd[1]);
 	}
 	else
 	{
 		close(fd[1]);
-/*		int	len;
-		char	*linep;
-		while ((len = get_next_line(0, &linep)) >= 0)
-		{
-			ft_printf("INPUT:\t'%s'\n", linep);
-			free(linep);
-		}*/
 		if (!(pid = fork()))
 		{
 			dup2(fd[0], 0);
@@ -96,9 +89,9 @@ int	main(int argc, char **argv, char **envp)
 		}
 		else
 			wait(NULL);
-	//	close(fd[0]);
+		close(fd[0]);
 	}
-	return (0);
+	return (0);*/
 	char	line[2048];
 	int		c;
 	int		x;

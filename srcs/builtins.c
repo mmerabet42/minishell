@@ -44,28 +44,25 @@ t_shret	builtin_setenv(int argc, char **argv)
 {
 	int		i;
 	char	*c;
-	char	*value;
+	char	*nava[2];
 
-	i = 1;
-	while (i < argc)
+	i = 0;
+	while (++i < argc)
 	{
-		if ((c = ft_strchr(argv[i], '=')))
+		if (ft_bzero(nava, sizeof(char *) * 2) && (c = ft_strchr(argv[i], '=')))
 		{
 			*c = '\0';
-			value = c + 1;
-			ft_setenv(argv[i], value, &g_shell->envp);
+			nava[1] = c + 1;
+			nava[0] = argv[i];
 		}
 		else if (i + 1 < argc)
-		{
-			ft_setenv(argv[i], argv[i + 1], &g_shell->envp);
-			++i;
-		}
-		++i;
+			ft_memcpy(nava, &argv[i++], sizeof(char *) * 2);
+		ft_setenv(nava[0], nava[1], &g_shell->envp);
+		if (ft_strequ(nava[0], "HOME"))
+			g_shell->homepwd = ft_getenv("HOME", g_shell->envp);
+		else if (ft_strequ(nava[0], "USER"))
+			g_shell->user = ft_getenv("USER", g_shell->envp);
 	}
-	if (ft_strcmp(argv[1], "HOME"))
-		g_shell->homepwd = ft_getenv("HOME", g_shell->envp);
-	else if (ft_strcmp(argv[1], "USER"))
-		g_shell->user = ft_getenv("USER", g_shell->envp);
 	return (SH_ESUCCESS);
 }
 
@@ -73,9 +70,15 @@ t_shret	builtin_unsetenv(int argc, char **argv)
 {
 	int	i;
 
-	i = 1;
-	while (i < argc)
-		ft_unsetenv(argv[i++], &g_shell->envp);
+	i = 0;
+	while (++i < argc)
+	{
+		ft_unsetenv(argv[i], &g_shell->envp);
+		if (ft_strequ(argv[i], "HOME"))
+			g_shell->homepwd = NULL;
+		else if (ft_strequ(argv[i], "USER"))
+			g_shell->user = NULL;
+	}
 	return (SH_ESUCCESS);
 }
 

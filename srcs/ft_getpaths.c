@@ -44,11 +44,8 @@ t_shret	ft_getfullpath(char *fname, char *fullpath, size_t size)
 	t_shret	shret;
 	char	**it;
 	
-	if (fname[0] == '.' && fname[1] == '/' && ft_memset(fullpath, '\0', size))
-	{
-		ft_strcat(ft_strcatc(ft_strcat(fullpath, g_shell->pwd), '/'), fname);
-		return (ft_access(fullpath, X_OK));
-	}
+	if (fname[0] == '.' || fname[0] == '/')
+		return (ft_access(ft_strcat(ft_bzero(fullpath, size), fname), X_OK));
 	shret = SH_NFOUND;
 	if ((it = g_shell->paths))
 	{

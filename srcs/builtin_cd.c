@@ -44,14 +44,15 @@ t_shret	builtin_cd(int argc, char **argv)
 	}
 	else if (argc > 1)
 	{
-		name = argv[1];
-		if (!ft_strcmp(argv[1], "-"))
+		if (!ft_strcmp((name = argv[1]), "-"))
 			name = ft_getenv("OLDPWD", g_shell->envp);
 		if ((acc = ft_chdir(name)) != SH_OK)
 		{
-			ft_printf("%s: %s: %s\n", argv[0], ft_strshret(acc), argv[1]);
+			ft_printf("%s: %s: %s\n", argv[0], ft_strshret(acc), name);
 			return (SH_EFAIL);
 		}
+		if (!ft_strcmp(argv[1], "-"))
+			ft_printf("%s\n", name);
 	}
 	ft_setenv("OLDPWD", ft_getenv("PWD", g_shell->envp), &g_shell->envp);
 	ft_setenv("PWD", ft_getcwd(g_shell->pwd, 2048), &g_shell->envp);
