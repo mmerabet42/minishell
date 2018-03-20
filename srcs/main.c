@@ -52,18 +52,22 @@ static void ft_readline(char *line)
 
 int	main(int argc, char **argv, char **envp)
 {
-/*	char	**args;
+	char	**args;
 	int	ret;
 	t_opt	opt;
 	int	i;
 
 	args = argv + 1;
-	while ((ret = ft_getopt(&args, "lau.0St.1s.1", &opt)) != OPT_END)
+	while ((ret = ft_getopt(&args, "neE", &opt)) != OPT_END)
 	{
 		if (ret == OPT_UNKNOWN)
-			ft_printf("Unknown option : %c\n", opt.c);
+		{
+			ft_printf("Unknown option : %c %d '%s'\n", opt.c, opt.seq, opt.cur);
+			if (opt.seq != 3)
+				++args;
+		}
 		else
-			ft_printf("%d -> Option : %c %d\n", ret, opt.c, opt.n);
+			ft_printf("%d -> Option : %c %d %d '%s'\n", ret, opt.c, opt.n, opt.seq, opt.cur);
 		if (opt.n > 0)
 		{
 			i = 0;
@@ -73,7 +77,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	while (*args)
 		ft_printf("End argument: '%s'\n", *args++);
-	return (0);*/
+	return (0);
 /*	pid_t	pid;
 	int		fd[2];
 	char	**ptr = argv++;

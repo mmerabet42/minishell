@@ -28,7 +28,7 @@ typedef enum	e_shret
 
 typedef enum	e_optret
 {
-	OPT_END, OPT_UNKNOWN, OPT_ALONE, OPT_OK, OPT_MISSING
+	OPT_END, OPT_UNKNOWN, OPT_ALAST, OPT_OK, OPT_MISSING
 }				t_optret;
 
 typedef struct	s_args
@@ -56,6 +56,8 @@ typedef struct	s_opt
 	char		c;
 	int			n;
 	char		**ptr;
+	char		*cur;
+	int			seq;
 }				t_opt;
 
 typedef t_shret	(*builtin_func)(int argc, char **argv);

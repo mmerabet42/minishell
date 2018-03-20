@@ -36,22 +36,22 @@ OBJB		=	$(addprefix $(OBJD),$(_OBJS))
 FRAMEWORKS	=
 
 # COLORS
-CRED=\x1b[91m
-CGREEN=\x1b[38;2;0;255;145m
-CEND=\x1b[0m
+CRED=\033[91m
+CGREEN=\033[38;2;0;255;145m
+CEND=\033[0m
 
 all: lib $(NAME)
 
 $(NAME): includes/shell.h $(LIBFT) $(OBJB)
-	@printf "\r\e[K$(CGREEN)Creating executable$(CEND): $(NAME)\n"
-	$(CC) $(CFLAGS) $(OBJB) $(LIBFT) $(FRAMEWORKS) -o $(NAME)
+	@printf "\r\033[K$(CGREEN)Creating executable$(CEND): $(NAME)\n"
+	@$(CC) $(CFLAGS) $(OBJB) $(LIBFT) $(FRAMEWORKS) -o $(NAME)
 	@echo  "$(NAME): $(CGREEN)done$(CEND)"
 
 lib:
 	@make -C $(LIBFTD)
 
 $(OBJD)%.o: $(SRCD)%.c
-	@printf "\r\e[K$(CGREEN)Compiling$(CEND): $@"
+	@printf "\r\033[K$(CGREEN)Compiling$(CEND): $@"
 	@mkdir -p $(OBJD)
 	@$(CC) $(CFLAGS) -o $@ -c $< $(ICLD)
 
