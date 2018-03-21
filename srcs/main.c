@@ -52,7 +52,7 @@ static void ft_readline(char *line)
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	**args;
+/*	char	**args;
 	int	ret;
 	t_opt	opt;
 	int	i;
@@ -63,8 +63,6 @@ int	main(int argc, char **argv, char **envp)
 		if (ret == OPT_UNKNOWN)
 		{
 			ft_printf("Unknown option : %c %d '%s'\n", opt.c, opt.seq, opt.cur);
-			if (opt.seq != 3)
-				++args;
 		}
 		else
 			ft_printf("%d -> Option : %c %d %d '%s'\n", ret, opt.c, opt.n, opt.seq, opt.cur);
@@ -77,7 +75,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	while (*args)
 		ft_printf("End argument: '%s'\n", *args++);
-	return (0);
+	return (0);*/
 /*	pid_t	pid;
 	int		fd[2];
 	char	**ptr = argv++;
@@ -122,6 +120,7 @@ int	main(int argc, char **argv, char **envp)
 	int		c;
 	int		x;
 
+	ft_printf("%d %d\n", EXIT_SUCCESS, EXIT_FAILURE);
 	(void)argc;
 	(void)argv;
 	shell_begin("minishell", envp);
@@ -134,13 +133,13 @@ int	main(int argc, char **argv, char **envp)
 			ft_printf("%#{lgrey}%{bold/;0;0;0}%%%{0}\n");
 		ft_printf("%{0}%S %{lred}%s %{lcyan}%s%{0} %{bold}%S%{0} ", L"㋜", g_shell->user, g_shell->pwd, L"∴");
 		ft_strclr(line);
-		if ((c = ft_readraw(line, 2048)) != 3 && c != 4 && line[0] != '\0')
+		if ((c = ft_readraw(line, 2048)))
 		{
-			ft_addhistory(line);
-			ft_readline(line);
+			if (c != 3 && c != 4)
+				ft_addhistory(line);
+			if (c != 3 && line[0])
+				ft_readline(c == 4 ? "exit" : line);
 		}
-		else if (c == 4)
-			ft_readline("exit");
 	}
 	ft_makeraw(0);
 	shell_end();

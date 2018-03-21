@@ -18,9 +18,19 @@
 
 t_shell	*g_shell;
 
-t_shret	builtin_echo(int argc, char **argv)
+int	builtin_echo(int argc, char **argv)
 {
-	int		i;
+	t_opt	opt;
+	int		ret;
+
+	++argv;
+	ft_bzero(&opt, sizeof(t_opt));
+	while ((ret = ft_getopt(&argv, "neE", &opt)) != OPT_END)
+	{
+		
+	}
+
+/*	int		i;
 	int		n;
 	char	*l;
 
@@ -36,11 +46,11 @@ t_shret	builtin_echo(int argc, char **argv)
 			ft_putchar(' ');
 	}
 	if (!n)
-		ft_putchar('\n');
-	return (SH_ESUCCESS);
+		ft_putchar('\n');*/
+	return (0);
 }
 
-t_shret	builtin_setenv(int argc, char **argv)
+int	builtin_setenv(int argc, char **argv)
 {
 	int		i;
 	char	*c;
@@ -63,10 +73,10 @@ t_shret	builtin_setenv(int argc, char **argv)
 		else if (ft_strequ(nava[0], "USER"))
 			g_shell->user = ft_getenv("USER", g_shell->envp);
 	}
-	return (SH_ESUCCESS);
+	return (0);
 }
 
-t_shret	builtin_unsetenv(int argc, char **argv)
+int	builtin_unsetenv(int argc, char **argv)
 {
 	int	i;
 
@@ -79,10 +89,10 @@ t_shret	builtin_unsetenv(int argc, char **argv)
 		else if (ft_strequ(argv[i], "USER"))
 			g_shell->user = NULL;
 	}
-	return (SH_ESUCCESS);
+	return (0);
 }
 
-t_shret	builtin_env(int argc, char **argv)
+int	builtin_env(int argc, char **argv)
 {
 	char	**it;
 
@@ -91,13 +101,13 @@ t_shret	builtin_env(int argc, char **argv)
 	it = g_shell->envp;
 	while (*it)
 		ft_putendl(*it++);
-	return (SH_ESUCCESS);
+	return (0);
 }
 
-t_shret	builtin_exit(int argc, char **argv)
+int	builtin_exit(int argc, char **argv)
 {
 	(void)argc;
 	(void)argv;
 	g_shell->running = 0;
-	return (SH_ESUCCESS);
+	return (0);
 }

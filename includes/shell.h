@@ -60,7 +60,7 @@ typedef struct	s_opt
 	int			seq;
 }				t_opt;
 
-typedef t_shret	(*builtin_func)(int argc, char **argv);
+typedef int		(*builtin_func)(int argc, char **argv);
 
 typedef struct	s_builtin
 {
@@ -105,12 +105,12 @@ void			ft_exitf(int code, const char *msgf, ...);
 
 t_shret			ft_isbuiltin(char *name, t_args *args);
 
-t_shret			builtin_cd(int argc, char **argv);
-t_shret			builtin_env(int argc, char **argv);
-t_shret			builtin_echo(int argc, char **argv);
-t_shret			builtin_exit(int argc, char **argv);
-t_shret			builtin_setenv(int argc, char **argv);
-t_shret			builtin_unsetenv(int argc, char **argv);
+int				builtin_cd(int argc, char **argv);
+int				builtin_env(int argc, char **argv);
+int				builtin_echo(int argc, char **argv);
+int				builtin_exit(int argc, char **argv);
+int				builtin_setenv(int argc, char **argv);
+int				builtin_unsetenv(int argc, char **argv);
 
 extern t_shell	*g_shell;
 

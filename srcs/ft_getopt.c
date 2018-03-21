@@ -17,7 +17,7 @@
 #include "ft_printf.h"
 
 /*
-** The working of this getopt version is similar to the real, but has
+** The working of this getopt version is similar to the real one, but has
 ** some differencies.
 **
 ** There can be 5 different return values:
@@ -51,11 +51,17 @@
 ** stored additional, but important, information about the current option.
 ** -> the 'c' attribute is the character option. If 'l' character option
 ** is caught, then c is equal to that character.
-** -> the 'n' attribute tells how many arguments has been successfully caught
+** -> the 'n' attribute tells how many arguments were successfully caught
 ** after the character option. It is equal to zero if the option is not waiting
 ** any arguments.
 ** -> the 'ptr' attribute points to the first argument after the character
 ** option. It is equal to NULL if the option is not waiting any arguments.
+** -> the 'seq' attribute is a little bit useless here, it just tells if the
+** option is in a sequence of option "-abcd" or not, and where.
+** There are 4 different values, 1: At the beginning of a sequence "-Axxx",
+** 2: In the middle of a sequence "-xAAAx", 3: At the end of a
+** sequence "-xxxA", and, finally 0: Has not been caught in a sequence "-A".
+** The usefullness of such a variable can be debated.
 */
 
 static int	getnargs(char c, const char *options)
@@ -125,25 +131,23 @@ int			ft_getopt(char ***argv, const char *options, t_opt *opt)
 	static int	isopt;
 	static char	**ptr;
 
+	if (!argv || !*argv || !**argv || !options || !opt)
+		return (OPT_END);
 	if (ptr != *argv)
 		isopt = 0;
-	if (**argv)
+	ptr = *argv;
+	if (!isopt)
+		opt->cur = **argv;
+	if (***argv == '-' || isopt)
 	{
-		ptr = *argv;
-		if (!isopt)
-			opt->cur = **argv;
-		if (***argv == '-' || isopt)
-		{
-			opt->ptr = ++(*argv);
-			opt->n = 0;
-			opt->c = 0;
-			opt->seq = 0;
-			if (isopt)
-				opt->seq = (!*(*ptr + 1) ? 3 : 2);
-			if (ft_strequ(*(*argv - 1), "--"))
-				return (OPT_END);
-			return (checkargs(argv, options, opt, &isopt));
-		}
+		opt->ptr = ++(*argv);
+		opt->n = 0;
+		opt->c = 0;
+		opt->seq = 0;
+		if (isopt)
+			opt->seq = (!*(*ptr + 1) ? 3 : 2);
+		if (ft_strequ(*(*argv - 1), "--"))
+			return (OPT_END);
 	}
-	return (OPT_END);
+	return (checkargs(argv, options, opt, &isopt));
 }

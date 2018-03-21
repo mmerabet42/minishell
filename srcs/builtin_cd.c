@@ -28,7 +28,7 @@ t_shret	ft_chdir(char *name)
 	return (SH_OK);
 }
 
-t_shret	builtin_cd(int argc, char **argv)
+int	builtin_cd(int argc, char **argv)
 {
 	t_shret	acc;
 	char	*name;
@@ -39,7 +39,7 @@ t_shret	builtin_cd(int argc, char **argv)
 		{
 			ft_printf("%s: %s: %s\n", argv[0], ft_strshret(acc),
 					g_shell->homepwd);
-			return (SH_EFAIL);
+			return (1);
 		}
 	}
 	else if (argc > 1)
@@ -49,12 +49,12 @@ t_shret	builtin_cd(int argc, char **argv)
 		if ((acc = ft_chdir(name)) != SH_OK)
 		{
 			ft_printf("%s: %s: %s\n", argv[0], ft_strshret(acc), name);
-			return (SH_EFAIL);
+			return (1);
 		}
 		if (!ft_strcmp(argv[1], "-"))
 			ft_printf("%s\n", name);
 	}
 	ft_setenv("OLDPWD", ft_getenv("PWD", g_shell->envp), &g_shell->envp);
 	ft_setenv("PWD", ft_getcwd(g_shell->pwd, 2048), &g_shell->envp);
-	return (SH_ESUCCESS);
+	return (0);
 }

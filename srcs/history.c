@@ -23,7 +23,7 @@ void	ft_addhistory(char *line)
 	free(g_shell->cline);
 	g_shell->cline = NULL;
 	if ((g_shell->history && !ft_strcmp(line, g_shell->history->content))
-			|| !(lst = ft_lstnew(line, ft_strlen(line) + 1)))
+		|| !line[0] ||  !(lst = ft_lstnew(line, ft_strlen(line) + 1)))
 		return ;
 	if ((lst->next = ft_lstparent(g_shell->history)))
 		lst->next->parent = lst;
