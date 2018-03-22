@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 19:29:29 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/19 22:13:53 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/22 16:55:26 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,16 @@ t_shell	*g_shell;
 
 int	builtin_echo(int argc, char **argv)
 {
-//	t_opt	opt;
-//	int		ret;
+	t_opt	opt;
+	int		ret;
 
-/*	++argv;
-	ft_bzero(&opt, sizeof(t_opt));
+	++argv;
 	while ((ret = ft_getopt(&argv, "neE", &opt)) != OPT_END)
 	{
 		
 	}
-
-*/	int		i;
+	return (0);
+	int		i;
 	int		n;
 	char	*l;
 

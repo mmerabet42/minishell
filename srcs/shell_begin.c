@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 19:09:16 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/19 18:01:15 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/22 14:20:08 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,10 @@ static void	initenvp(char **envp)
 	g_shell->envp[i] = NULL;
 }
 
-void		shell_begin(char *name, char **envp)
+void		shell_begin(char *name, int argc, char **argv, char **envp)
 {
+	(void)argc;
+	(void)argv;
 	if (!(g_shell = (t_shell *)ft_memalloc(sizeof(t_shell))))
 		ft_exit(EXIT_FAILURE, "Failed to begin shell. Exiting");
 	if (!(g_shell->paths = ft_getpaths(envp)))

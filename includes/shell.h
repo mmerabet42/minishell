@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:44:40 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/19 21:02:53 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/22 16:55:29 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef enum	e_shret
 
 typedef enum	e_optret
 {
-	OPT_END, OPT_UNKNOWN, OPT_ALAST, OPT_OK, OPT_MISSING
+	OPT_END, OPT_UNKNOWN, OPT_ALAST, OPT_OK, OPT_MISSING, OPT_EMPTY
 }				t_optret;
 
 typedef struct	s_args
@@ -54,6 +54,7 @@ typedef struct	s_shell
 typedef struct	s_opt
 {
 	char		c;
+	char		*clong;
 	int			n;
 	char		**ptr;
 	char		*cur;
@@ -93,7 +94,7 @@ t_shret			ft_getfullpath(char *fname,
 
 char			*ft_strshret(t_shret shret);
 
-void			shell_begin(char *name, char **envp);
+void			shell_begin(char *name, int argc, char **argv, char **envp);
 void			shell_end(void);
 
 void			ft_addhistory(char *line);

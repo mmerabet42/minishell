@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 17:21:45 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/15 21:44:31 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/22 14:11:43 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int		ft_exec(char *filename, char **argv, char **envp)
 	pid_t	pidl;
 	int		ret;
 
+	ret = -1;
 	if (!(pidl = fork()))
 	{
 		execve(filename, argv, envp);

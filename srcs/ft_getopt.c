@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 20:36:37 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/19 21:55:35 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/22 16:32:20 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,37 @@
 static int	getnargs(char c, const char *options)
 {
 	char	*cs;
+	char	*p;
 
-	if (c != '.' && !ft_isdigit(c) && (cs = ft_strchr(options, c)))
+	if (c != '.' && c != ' ' && !ft_isdigit(c) && (cs = ft_strchr(options, c)))
+		return (*(cs + 1) == '.' ? ft_atoi(cs + 2) : 0);
+	else if (ft_isdigit(c))
 	{
-		if (*(cs + 1) == '.')
-			return (ft_atoi(cs + 2));
-		return (0);
+		cs = (char *)options;
+		while (*cs && (cs = ft_strchr(cs, c)))
+		{
+			p = cs;
+			while (p != options && ft_isdigit(*p))
+				--p;
+			if (*p != '.')
+				return (*(cs + 1) == '.' ? ft_atoi(cs + 2) : 0);
+			++cs;
+		}
+	}
+	return (-1);
+}
+
+static int	getnpargs(char *s, const char *options)
+{
+	size_t	l;
+
+	if (*s == '-')
+	{
+		l = ft_strlen(++s);
+		while ((options = ft_strchr(options, ';')))
+			if (ft_strnequ(s, ++options, l))
+				return (*(options += l) == '.' ? ft_atoi(options + 1) : 0);
+		return (-2);
 	}
 	return (-1);
 }
@@ -85,7 +110,7 @@ static int	getcargs(t_opt *opt, char ***argv)
 	while (i < opt->n && **argv)
 	{
 		if (ft_strequ(**argv, "--"))
-			break;
+			break ;
 		++(*argv);
 		++i;
 	}
@@ -101,28 +126,28 @@ static int	checkargs(char ***argv, const char *options, t_opt *opt, int *isopt)
 {
 	char	*str;
 
-	if (*(str = *(*argv - 1)) == '-')
-		++str;
+	if ((str = *(*argv - 1)) && !*isopt && *str == '-' && !*++str)
+		return (OPT_EMPTY);
 	opt->c = *str;
-	if ((opt->n = getnargs(*str, options)) == -1)
+	if ((opt->n = getnpargs(str, options)) != -1 && opt->n != -2)
+		opt->clong = str + 1;
+	else if (opt->n != -2 && (opt->n = getnargs(*str, options)) == -1)
 	{
-		if (!*(str + 1))
-			*isopt = 0;
-		else if ((*isopt = 1))
+		*isopt = (!*(str + 1) ? 0 : *isopt);
+		if (*(str + 1) && (*isopt = 1))
 		{
-			if (!opt->seq)
-				opt->seq = 1;
+			opt->seq = (!opt->seq ? 1 : opt->seq);
 			*--(*argv) = str + 1;
 		}
-		return (OPT_UNKNOWN);
 	}
-	else if (*(str + 1) && (*isopt = 1))
+	else if (opt->n != -2 && *(str + 1) && (*isopt = 1))
 	{
-		if (!opt->seq)
-			opt->seq = 1;
+		opt->seq = (!opt->seq ? 1 : opt->seq);
 		*--(*argv) = str + 1;
 		return (opt->n > 0 && !(opt->n = 0) ? OPT_ALAST : OPT_OK);
 	}
+	else if (opt->n == -2)
+		return (OPT_UNKNOWN);
 	return (!(*isopt = 0) ? getcargs(opt, argv) : OPT_OK);
 }
 
@@ -144,10 +169,12 @@ int			ft_getopt(char ***argv, const char *options, t_opt *opt)
 		opt->n = 0;
 		opt->c = 0;
 		opt->seq = 0;
+		opt->clong = NULL;
 		if (isopt)
 			opt->seq = (!*(*ptr + 1) ? 3 : 2);
-		if (ft_strequ(*(*argv - 1), "--"))
+		if (!isopt && ft_strequ(*(*argv - 1), "--"))
 			return (OPT_END);
+		return (checkargs(argv, options, opt, &isopt));
 	}
-	return (checkargs(argv, options, opt, &isopt));
+	return (OPT_END);
 }
