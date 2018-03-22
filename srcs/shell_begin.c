@@ -16,6 +16,7 @@
 #include "ft_printf.h"
 #include <unistd.h>
 #include <sys/signal.h>
+#include <locale.h>
 
 extern t_shell	*g_shell;
 
@@ -52,6 +53,7 @@ void		shell_begin(char *name, int argc, char **argv, char **envp)
 		ft_exit(EXIT_FAILURE, "Failed to begin shell. Exiting");
 	if (!(g_shell->paths = ft_getpaths(envp)))
 		return ;
+	setlocale(LC_ALL, "");
 	g_shell->name = name;
 	g_shell->running = 1;
 	g_shell->ihis = -1;

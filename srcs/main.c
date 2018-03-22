@@ -53,13 +53,13 @@ static void ft_readline(char *line)
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	**args;
+/*	char	**args;
 	int	ret;
 	t_opt	opt;
 	int	i;
 
-	args = argv + 2;
-	while ((ret = ft_getopt(&args, argv[1], &opt)) != OPT_END)
+	args = argv + 1;
+	while ((ret = ft_getopt(&args, "lq", &opt)) != OPT_END)
 	{
 		if (ret == OPT_UNKNOWN)
 			ft_printf("Unknown option : %c %d '%s'\n", opt.c, opt.seq, opt.cur);
@@ -74,7 +74,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	while (*args)
 		ft_printf("End argument: '%s'\n", *args++);
-	return (0);
+	return (0);*/
 /*	pid_t	pid;
 	int		fd[2];
 	char	**ptr = argv++;
@@ -120,7 +120,6 @@ int	main(int argc, char **argv, char **envp)
 	int		x;
 
 	shell_begin("minishell", argc, argv, envp);
-	setlocale(LC_ALL, "");
 	ft_bzero(line, 2048);
 	while (g_shell->running)
 	{

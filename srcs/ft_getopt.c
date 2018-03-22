@@ -35,7 +35,7 @@
 ** OPT_OK: No problem has been caught.
 **
 ** [char ***argv] ->
-** The first parameter is a pointer to an array of string (the address of
+** The first parameter is a pointer to an array of strings (the address of
 ** argv), the function needs it in order to move through the array between The
 ** calls. The function assume that argv[0] is not a part of the array.
 **
@@ -68,13 +68,18 @@ static int	getnargs(char c, const char *options)
 {
 	char	*cs;
 	char	*p;
+	char	cf[3];
 
-	if (c != '.' && c != ' ' && !ft_isdigit(c) && (cs = ft_strchr(options, c)))
+	cf[0] = c;
+	cf[1] = ';';
+	cf[2] = '\0';
+	if (c != '.' && c != ' ' && !ft_isdigit(c)
+		&& (cs = ft_strpbrk(options, cf)) && *cs != ';')
 		return (*(cs + 1) == '.' ? ft_atoi(cs + 2) : 0);
 	else if (ft_isdigit(c))
 	{
 		cs = (char *)options;
-		while (*cs && (cs = ft_strchr(cs, c)))
+		while (*cs && (cs = ft_strpbrk(cs, cf)) && *cs != ';')
 		{
 			p = cs;
 			while (p != options && ft_isdigit(*p))
@@ -84,7 +89,7 @@ static int	getnargs(char c, const char *options)
 			++cs;
 		}
 	}
-	return (-1);
+	return (-2);
 }
 
 static int	getnpargs(char *s, const char *options)
@@ -131,7 +136,7 @@ static int	checkargs(char ***argv, const char *options, t_opt *opt, int *isopt)
 	opt->c = *str;
 	if ((opt->n = getnpargs(str, options)) != -1 && opt->n != -2)
 		opt->clong = str + 1;
-	else if (opt->n != -2 && (opt->n = getnargs(*str, options)) == -1)
+	else if (opt->n != -2 && (opt->n = getnargs(*str, options)) == -2)
 	{
 		*isopt = (!*(str + 1) ? 0 : *isopt);
 		if (*(str + 1) && (*isopt = 1))
@@ -146,7 +151,7 @@ static int	checkargs(char ***argv, const char *options, t_opt *opt, int *isopt)
 		*--(*argv) = str + 1;
 		return (opt->n > 0 && !(opt->n = 0) ? OPT_ALAST : OPT_OK);
 	}
-	else if (opt->n == -2)
+	if (opt->n == -2)
 		return (OPT_UNKNOWN);
 	return (!(*isopt = 0) ? getcargs(opt, argv) : OPT_OK);
 }

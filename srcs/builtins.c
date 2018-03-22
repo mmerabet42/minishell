@@ -18,55 +18,6 @@
 
 t_shell	*g_shell;
 
-int	builtin_echo(int argc, char **argv)
-{
-	t_opt	opt;
-	int		ret;
-	int		ops[2];
-	char	*l;
-
-	++argv;
-	ft_bzero(ops, sizeof(int) * 3);
-	ops[1] = 1;
-	while ((ret = ft_getopt(&argv, "neE", &opt)) != OPT_END)
-	{
-		if (opt.c == 'n')
-			ops[0] = 1;
-		else if (opt.c == 'e')
-			ops[1] = 1;
-		else if (opt.c == 'E')
-			ops[1] = 0;
-	}
-	while (*argv)
-	{
-		if (ops[1])
-			ft_printf("%.*r", ft_strlenk( (l = ft_strdupk(*argv)));
-		else
-			ft_printf("%
-		++argv;
-	}
-	if (!ops[0])
-		ft_putchar('\n');
-	return (0);
-	int		i;
-	int		n;
-
-	i = 0;
-	n = 0;
-	if (argc > 1 && !ft_strcmp(argv[1], "-n") && ++i)
-		n = 1;
-	while (i++ < argc)
-	{
-		ft_putstr((l = ft_strdupk(argv[i])));
-		free(l);
-		if (i + 1 < argc)
-			ft_putchar(' ');
-	}
-	if (!n)
-		ft_putchar('\n');
-	return (0);
-}
-
 int	builtin_setenv(int argc, char **argv)
 {
 	int		i;

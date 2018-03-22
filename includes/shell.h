@@ -37,6 +37,14 @@ typedef struct	s_args
 	char		**argv;
 }				t_args;
 
+typedef int		(*builtin_func)(int argc, char **argv);
+
+typedef struct	s_builtin
+{
+	char			*name;
+	builtin_func	func;
+}				t_builtin;
+
 typedef struct	s_shell
 {
 	char		*name;
@@ -49,6 +57,7 @@ typedef struct	s_shell
 	t_list		*history;
 	int			ihis;
 	char		*cline;
+	t_builtin	*builtins;
 }				t_shell;
 
 typedef struct	s_opt
@@ -60,14 +69,6 @@ typedef struct	s_opt
 	char		*cur;
 	int			seq;
 }				t_opt;
-
-typedef int		(*builtin_func)(int argc, char **argv);
-
-typedef struct	s_builtin
-{
-	char			*name;
-	builtin_func	func;
-}				t_builtin;
 
 char			*ft_getargs(char *cmd, t_args *args);
 void			ft_delargs(t_args *args);

@@ -12,6 +12,7 @@
 
 #include "shell.h"
 #include "ft_str.h"
+#include "ft_mem.h"
 
 static t_builtin	g_builtins[] = {
 	{"cd", builtin_cd}, {"echo", builtin_echo}, {"setenv", builtin_setenv},
@@ -25,13 +26,16 @@ t_shell	*g_shell;
 t_shret	ft_isbuiltin(char *filename, t_args *args)
 {
 	size_t	i;
+	char	**argvp;
 
 	i = 0;
 	while (i < g_builtins_size)
 	{
 		if (!ft_strcmp(filename, g_builtins[i].name))
 		{
-			g_builtins[i].func(args->argc, args->argv);
+			argvp = ft_memdup(args->argv, sizeof(char *) * (args->argc + 1));
+			g_builtins[i].func(args->argc, argvp);
+			free(argvp);
 			return (SH_ESUCCESS);
 		}
 		++i;
