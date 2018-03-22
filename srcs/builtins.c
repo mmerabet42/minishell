@@ -20,17 +20,17 @@ t_shell	*g_shell;
 
 int	builtin_echo(int argc, char **argv)
 {
-	t_opt	opt;
-	int		ret;
+//	t_opt	opt;
+//	int		ret;
 
-	++argv;
+/*	++argv;
 	ft_bzero(&opt, sizeof(t_opt));
 	while ((ret = ft_getopt(&argv, "neE", &opt)) != OPT_END)
 	{
 		
 	}
 
-/*	int		i;
+*/	int		i;
 	int		n;
 	char	*l;
 
@@ -46,7 +46,7 @@ int	builtin_echo(int argc, char **argv)
 			ft_putchar(' ');
 	}
 	if (!n)
-		ft_putchar('\n');*/
+		ft_putchar('\n');
 	return (0);
 }
 

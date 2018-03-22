@@ -16,17 +16,19 @@
 #include "ft_printf.h"
 #include <sys/wait.h>
 
-void	ft_exec(char *filename, char **argv, char **envp)
+int		ft_exec(char *filename, char **argv, char **envp)
 {
 	pid_t	pidl;
+	int		ret;
 
 	if (!(pidl = fork()))
 	{
 		execve(filename, argv, envp);
-		exit(0);
+		exit(-1);
 	}
-	else
-		wait(NULL);
+	else if (pidl)
+		wait(&ret);
+	return (ret == 65280 ? -1 : ret);
 }
 
 void	ft_exit(int code, const char *msg)

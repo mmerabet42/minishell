@@ -99,7 +99,7 @@ void			shell_end(void);
 void			ft_addhistory(char *line);
 char			*ft_gethistory(int i);
 
-void			ft_exec(char *filename, char **argv, char **envp);
+int				ft_exec(char *filename, char **argv, char **envp);
 void			ft_exit(int code, const char *msg);
 void			ft_exitf(int code, const char *msgf, ...);
 

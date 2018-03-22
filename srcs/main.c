@@ -38,8 +38,8 @@ static void ft_readline(char *line)
 			if (shret != SH_OK)
 				ft_printf("%s: %s: %s\n", g_shell->name, ft_strshret(shret),
 					args.argv[0]);
-			else
-				ft_exec(fullpath, args.argv, g_shell->envp);
+			else if (ft_exec(fullpath, args.argv, g_shell->envp) == -1)
+				ft_printf("%s: exec format error: %s\n", g_shell->name, args.argv[0]);
 		}
 		ft_delargs(&args);
 	}
@@ -49,6 +49,7 @@ static void ft_readline(char *line)
 #include <string.h>
 #include <errno.h>
 #include <sys/wait.h>
+#include <limits.h>
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -120,7 +121,6 @@ int	main(int argc, char **argv, char **envp)
 	int		c;
 	int		x;
 
-	ft_printf("%d %d\n", EXIT_SUCCESS, EXIT_FAILURE);
 	(void)argc;
 	(void)argv;
 	shell_begin("minishell", envp);
