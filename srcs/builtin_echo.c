@@ -31,7 +31,7 @@ static int	checkerror(t_opt *opt, char **argv, int ret)
 		if (*opt->cur && (*argv -= 2))
 			return (0);
 	}
-	else if (opt->seq == 0 && ret == OPT_UNKNOWN)
+	else if (opt->cur == 0 && ret == OPT_UNKNOWN)
 		return (0);
 	return (1);
 }
