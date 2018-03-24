@@ -3,7 +3,7 @@
 #include "ft_mem.h"
 #include "ft_io.h"
 
-static void	printecho(char **argv, int ops[2], char *sep)
+static void	goecho(char **argv, int ops[2], char *sep)
 {
 	char	*l;
 
@@ -54,14 +54,12 @@ int			builtin_echo(int argc, char **argv)
 			break;
 		if (opt.c == 'n')
 			ops[0] = 1;
-		else if (opt.c == 'e')
-			ops[1] = 1;
-		else if (opt.c == 'E')
-			ops[1] = 0;
+		else if (opt.c == 'e' || opt.c == 'E')
+			ops[1] = (opt.c == 'e' ? 1 : 0);
 		else if (opt.c == 'c' && opt.n == 1)
 			sep = *opt.ptr;
 	}
-	printecho(argv, ops, sep);
+	goecho(argv, ops, sep);
 	return (0);
 }
 

@@ -115,12 +115,12 @@ int	main(int argc, char **argv, char **envp)
 		close(fd[0]);
 	}
 	return (0);*/
-	char	line[2048];
+	char	line[8192];
 	int		c;
 	int		x;
 
 	shell_begin("minishell", argc, argv, envp);
-	ft_bzero(line, 2048);
+	ft_bzero(line, 8192);
 	while (g_shell->running)
 	{
 		ft_getcursor(&x, NULL);
@@ -129,7 +129,7 @@ int	main(int argc, char **argv, char **envp)
 		ft_printf("%{0}%S %{lred}%s %{lcyan}%s%{0} %{bold}%S%{0} ", L"㋜",
 				g_shell->user, g_shell->pwd, L"∴");
 		ft_strclr(line);
-		if ((c = ft_readraw(line, 2048)))
+		if ((c = ft_readraw(line, 8192)))
 		{
 			if (c != 3 && c != 4)
 				ft_addhistory(line);

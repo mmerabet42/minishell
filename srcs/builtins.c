@@ -62,13 +62,36 @@ int	builtin_unsetenv(int argc, char **argv)
 
 int	builtin_env(int argc, char **argv)
 {
+	t_args	args;
+	t_opt	opt;
 	char	**it;
+	int		i;
 
 	(void)argc;
 	(void)argv;
-	it = g_shell->envp;
+	args.argc = ft_tabsize(g_shell->envp);
+	args.argv = ft_memdup(g_shell->envp, sizeof(char *) * (args.argc + 1));
+	i = -1;
+	while (++i < args.argc)
+		args.argv[i] = ft_strdup(args.argv[i]);
+	it = argv + 1;
+	while ((i = ft_getopt(&it, "iu;ignore-environment;unset.1;help", &opt)) != OPT_END)
+	{
+		if (i == OPT_UNKNOWN)
+		{
+			if (opt.c == '-')
+				ft_printf("%s: invalid option -- '%s'\n", argv[0], opt.clong);
+			else
+				ft_printf("%s: invalid option -- '%c'\n", argv[0], opt.c);
+			ft_printf("Try '%s --help' for more information.\n", argv[0]);
+			ft_delargs(&args);
+			return (1);
+		}
+	}
+	it = args.argv;
 	while (*it)
 		ft_putendl(*it++);
+	ft_delargs(&args);
 	return (0);
 }
 

@@ -36,21 +36,16 @@ int	builtin_cd(int argc, char **argv)
 	if (argc == 1)
 	{
 		if ((acc = ft_chdir(g_shell->homepwd)) != SH_OK)
-		{
-			ft_printf("%s: %s: %s\n", argv[0], ft_strshret(acc),
-					g_shell->homepwd);
-			return (1);
-		}
+			return (ft_printf("%s: %s: %s\n", argv[0], ft_strshret(acc),
+					g_shell->homepwd) ? 1 : 1);
 	}
 	else if (argc > 1)
 	{
 		if (!ft_strcmp((name = argv[1]), "-"))
 			name = ft_getenv("OLDPWD", g_shell->envp);
 		if ((acc = ft_chdir(name)) != SH_OK)
-		{
-			ft_printf("%s: %s: %s\n", argv[0], ft_strshret(acc), name);
-			return (1);
-		}
+			return (ft_printf("%s: %s: %s\n", argv[0],
+					ft_strshret(acc), name) ? 1 : 1);
 		if (!ft_strcmp(argv[1], "-"))
 			ft_printf("%s\n", name);
 	}

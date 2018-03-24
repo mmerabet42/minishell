@@ -92,7 +92,7 @@ static int	getnargs(char c, const char *options)
 	return (-2);
 }
 
-static int	getnpargs(char *s, const char *options)
+static int	getnpargs(char *s, const char *options, t_opt *opt)
 {
 	size_t	l;
 
@@ -102,6 +102,7 @@ static int	getnpargs(char *s, const char *options)
 		while ((options = ft_strchr(options, ';')))
 			if (ft_strnequ(s, ++options, l))
 				return (*(options += l) == '.' ? ft_atoi(options + 1) : 0);
+		opt->clong = s;
 		return (-2);
 	}
 	return (-1);
@@ -134,7 +135,7 @@ static int	checkargs(char ***argv, const char *options, t_opt *opt, int *isopt)
 	if ((str = *(*argv - 1)) && !*isopt && *str == '-' && !*++str)
 		return (OPT_EMPTY);
 	opt->c = *str;
-	if ((opt->n = getnpargs(str, options)) != -1 && opt->n != -2)
+	if ((opt->n = getnpargs(str, options, opt)) != -1 && opt->n != -2)
 		opt->clong = str + 1;
 	else if (opt->n != -2 && (opt->n = getnargs(*str, options)) == -2)
 	{

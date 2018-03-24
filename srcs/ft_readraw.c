@@ -48,7 +48,7 @@ void		ft_makeraw(int setb)
 		tcsetattr((isset = 0), TCSANOW, &g_origt);
 }
 
-static void moveline(char *line, size_t *cursor, int direction)
+static void moveline(char *line, size_t *cursor, int direction, size_t size)
 {
 	size_t	i;
 	
@@ -56,7 +56,7 @@ static void moveline(char *line, size_t *cursor, int direction)
 		return ;
 	i = (direction ? ft_strlen(line) : --(*cursor));
 	while (((direction == 0 && line[i])
-		|| (direction && i >= *cursor && i > 0)) && i < 2048)
+		|| (direction && i >= *cursor && i > 0)) && i < size)
 	{
 		line[i] = line[i + (direction ? -1 : 1)];
 		i += (direction ? -1 : 1);
@@ -111,19 +111,19 @@ int			ft_readraw(char *line, size_t size)
 
 	cursor = 0;
 	ft_makeraw(1);
-	while ((c = ft_getch()) && cursor < size)
+	while ((c = ft_getch()) && cursor < size - 1)
 	{
 		if (c == 3 || c == 4 || c == 13)
 			break ;
 		else if (c == 127)
-			moveline(line, &cursor, 0);
+			moveline(line, &cursor, 0, size);
 		else if (c == '\033')
 			movecursor(line, &cursor);
 		else
 		{
 			ft_putchar((char)c);
 			if (line[cursor] != '\0')
-				moveline(line, &cursor, 1);
+				moveline(line, &cursor, 1, size);
 			line[cursor++] = (char)c;
 		}
 	}
