@@ -39,7 +39,8 @@ static void	initenvp(char **envp)
 			g_shell->user = ft_strchr(*envp, '=') + 1;
 		else if (ft_strmatch(*envp, "HOME=*"))
 			g_shell->homepwd = ft_strchr(*envp, '=') + 1;
-		g_shell->envp[i++] = ft_strdup(*envp);
+		if (!(g_shell->envp[i++] = ft_strdup(*envp)))
+			ft_exit(EXIT_FAILURE, "Failed to copy 'envp'. Exiting");
 		++envp;
 	}
 	g_shell->envp[i] = NULL;
@@ -49,6 +50,8 @@ void		shell_begin(char *name, int argc, char **argv, char **envp)
 {
 	(void)argc;
 	(void)argv;
+	if (signal(SIGINT, sign_handler) == SIG_ERR)
+		ft_exit(EXIT_FAILURE, "Failed to catch 'SIGINT' signal. Exiting.");
 	if (!(g_shell = (t_shell *)ft_memalloc(sizeof(t_shell))))
 		ft_exit(EXIT_FAILURE, "Failed to begin shell. Exiting");
 	if (!(g_shell->paths = ft_getpaths(envp)))
@@ -58,8 +61,6 @@ void		shell_begin(char *name, int argc, char **argv, char **envp)
 	g_shell->running = 1;
 	g_shell->ihis = -1;
 	ft_getcwd(g_shell->pwd, 2048);
-	if (signal(SIGINT, sign_handler) == SIG_ERR)
-		ft_exit(EXIT_FAILURE, "Failed to catch 'SIGINT' signal. Exiting.");
 	initenvp(envp);
 }
 

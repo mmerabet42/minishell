@@ -74,9 +74,9 @@ char			*ft_getargs(char *cmd, t_args *args);
 void			ft_delargs(t_args *args);
 
 char			*ft_getenv(char *name, char **envp);
-void			ft_setenv(char *name, char *value, char ***envp);
-void			ft_unsetenv(char *name, char ***envp);
-int				ft_addenv(char *name, char *value, char ***envp);
+int				ft_setenv(char *name, char *value, char ***envp);
+int				ft_unsetenv(char *name, char ***envp);
+int				ft_putenv(char *name, char *value, char ***envp);
 
 t_shret			ft_access(char *filename, int tests);
 t_shret			ft_chdir(char *dirname);

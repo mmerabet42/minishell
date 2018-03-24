@@ -62,19 +62,16 @@ char	*ft_getenv(char *name, char **envp)
 	return (NULL);
 }
 
-void	ft_setenv(char *name, char *value, char ***envp)
+int	ft_setenv(char *name, char *value, char ***envp)
 {
 	char	*ename;
 	char	**it;
 	size_t	len;
 
 	if (!envp || !*envp || !name || !value)
-		return ;
+		return (0);
 	else if (!(ename = ft_getenv(name, *envp)))
-	{
-		ft_putenv(name, value, envp);
-		return ;
-	}
+		return (ft_putenv(name, value, envp));
 	len = ft_strlen(name);
 	ename -= len + 1;
 	it = *envp;
@@ -84,23 +81,24 @@ void	ft_setenv(char *name, char *value, char ***envp)
 		{
 			free(*it);
 			*it = ft_envitize(name, value);
-			return ;
+			return (1);
 		}
 		++it;
 	}
+	return (0);
 }
 
-void	ft_unsetenv(char *name, char ***envp)
+int	ft_unsetenv(char *name, char ***envp)
 {
 	char	*ename;
 	char	**envpl;
 	int		i;
 
 	if (!envp || !*envp || !name || !(ename = ft_getenv(name, *envp)))
-		return ;
+		return (0);
 	else if (!(envpl = (char **)malloc(sizeof(char *)
 					* (ft_tabsize(*envp)))))
-		return ;
+		return (0);
 	ename -= ft_strlen(name) + 1;
 	i = 0;
 	while ((*envp)[i])
@@ -117,4 +115,5 @@ void	ft_unsetenv(char *name, char ***envp)
 	envpl[i - 1] = NULL;
 	free((*envp));
 	*envp = envpl;
+	return (1);
 }
