@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 18:25:06 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/15 19:24:06 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/25 16:41:29 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ft_addhistory(char *line)
 	free(g_shell->cline);
 	g_shell->cline = NULL;
 	if ((g_shell->history && !ft_strcmp(line, g_shell->history->content))
-		|| !line[0] ||  !(lst = ft_lstnew(line, ft_strlen(line) + 1)))
+			|| !line[0] || !(lst = ft_lstnew(line, ft_strlen(line) + 1)))
 		return ;
 	if ((lst->next = ft_lstparent(g_shell->history)))
 		lst->next->parent = lst;
@@ -40,5 +40,3 @@ char	*ft_gethistory(int i)
 		return ((char *)lst->content);
 	return ("");
 }
-
-

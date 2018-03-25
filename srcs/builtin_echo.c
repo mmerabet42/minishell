@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_echo.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/25 16:27:13 by mmerabet          #+#    #+#             */
+/*   Updated: 2018/03/25 21:51:40 by mmerabet         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "shell.h"
 #include "ft_str.h"
 #include "ft_mem.h"
@@ -27,7 +39,7 @@ static int	checkerror(t_opt *opt, char **argv, int ret)
 	{
 		while (*++opt->cur)
 			if (!ft_strchr("neEc", *opt->cur))
-				break;
+				break ;
 		if (*opt->cur && (*argv -= 2))
 			return (0);
 	}
@@ -47,19 +59,19 @@ int			builtin_echo(int argc, char **argv)
 	++argv;
 	ops[0] = 0;
 	ops[1] = 1;
-	sep = " ";
+	sep = ft_strdup(" ");
 	while ((ret = ft_getopt(&argv, "neEc.1", &opt)) != OPT_END)
 	{
 		if (!checkerror(&opt, argv, ret))
-			break;
+			break ;
 		if (opt.c == 'n')
 			ops[0] = 1;
 		else if (opt.c == 'e' || opt.c == 'E')
 			ops[1] = (opt.c == 'e' ? 1 : 0);
 		else if (opt.c == 'c' && opt.n == 1)
-			sep = *opt.ptr;
+			sep = ft_strdupk(*opt.ptr);
 	}
 	goecho(argv, ops, sep);
+	free(sep);
 	return (0);
 }
-

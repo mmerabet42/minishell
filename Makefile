@@ -6,13 +6,13 @@
 #    By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/11 18:07:15 by mmerabet          #+#    #+#              #
-#    Updated: 2018/03/19 19:10:34 by mmerabet         ###   ########.fr        #
+#    Updated: 2018/03/25 21:38:55 by mmerabet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
 CC			=	gcc
-CFLAGS		=	-Wall -Werror -Wextra -g -fsanitize=address
+CFLAGS		=	-Wall -Werror -Wextra
 
 LIBFTD		=	libft
 LIBFT		=	$(LIBFTD)/libft.a

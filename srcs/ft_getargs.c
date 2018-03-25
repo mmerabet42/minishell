@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 20:27:14 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/15 21:20:44 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/25 21:52:45 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,26 @@ static char	*ctilde(int pos, char *homepwd, char **cmd)
 	return (str);
 }
 
+static char	*goenv(char *tld)
+{
+	size_t	di;
+	char	*dptr;
+
+	if ((di = ft_strchr_pos(tld, '$')) != -1)
+	{
+		tld[di] = '\0';
+		if ((dptr = ft_getenv(&tld[di + 1], g_shell->envp)))
+			tld = ft_strjoin_clr(tld, dptr, 0);
+		else
+			tld = ft_strjoin_clr(tld, NULL, 0);
+	}
+	return (tld);
+}
+
 static char	*checkarg(char **cmd)
 {
 	static char	*str;
 	char		*tld;
-	int			pos;
 
 	if (ft_strchr(DLM_FARG, **cmd))
 	{
@@ -50,10 +65,10 @@ static char	*checkarg(char **cmd)
 			++(*cmd);
 		str = ft_strjoin_clr(str, tld, 2);
 	}
-	else if ((pos = ft_strpbrkl_pos(*cmd, DLM_ALL)) != -1 || 1)
+	else
 	{
-		tld = ctilde(pos, g_shell->homepwd, cmd);
-		str = ft_strjoin_clr(str, tld, 2);
+		tld = ctilde(ft_strpbrkl_pos(*cmd, DLM_ALL), g_shell->homepwd, cmd);
+		str = ft_strjoin_clr(str, goenv(tld), 2);
 	}
 	if (!ft_strchr(DLM_ARG DLM_INS, **cmd))
 		return (NULL);
@@ -68,7 +83,7 @@ char		*ft_getargs(char *cmd, t_args *args)
 
 	if (!cmd || !args || !*cmd)
 		return (NULL);
-	while (ft_strchr(DLM_ARG, *cmd))
+	while (*cmd && ft_strchr(DLM_ARG, *cmd))
 		++cmd;
 	while (*cmd && !ft_strchr(DLM_INS, *cmd))
 	{
@@ -86,7 +101,7 @@ char		*ft_getargs(char *cmd, t_args *args)
 
 void		ft_delargs(t_args *args)
 {
-	int		i;
+	int	i;
 
 	if (!args)
 		return ;

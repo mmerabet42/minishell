@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:44:40 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/22 17:17:25 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/25 21:52:49 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # define DLM_ARG " \t"
 # define DLM_INS ";>"
 # define DLM_FARG "\"'"
+# define DLM_FARGENV "'"
 # define DLM_ALL DLM_ARG DLM_INS DLM_FARG
 
 typedef enum	e_shret
@@ -37,12 +38,12 @@ typedef struct	s_args
 	char		**argv;
 }				t_args;
 
-typedef int		(*builtin_func)(int argc, char **argv);
+typedef int	(*t_builtin_func)(int, char **);
 
 typedef struct	s_builtin
 {
 	char			*name;
-	builtin_func	func;
+	t_builtin_func	func;
 }				t_builtin;
 
 typedef struct	s_shell
@@ -58,6 +59,7 @@ typedef struct	s_shell
 	int			ihis;
 	char		*cline;
 	t_builtin	*builtins;
+	pid_t		curpid;
 }				t_shell;
 
 typedef struct	s_opt
@@ -88,6 +90,7 @@ void			ft_makeraw(int setb);
 int				ft_readraw(char *line, size_t size);
 
 char			**ft_getpaths(char **envp);
+void			resetpath(void);
 
 t_shret			ft_getfullpath(char *fname,
 								char *fullpath,
@@ -106,6 +109,8 @@ void			ft_exit(int code, const char *msg);
 void			ft_exitf(int code, const char *msgf, ...);
 
 t_shret			ft_isbuiltin(char *name, t_args *args);
+int				isbuiltin(char *name);
+int				execbuiltin(char *name, t_args *args);
 
 int				builtin_cd(int argc, char **argv);
 int				builtin_env(int argc, char **argv);
@@ -113,6 +118,7 @@ int				builtin_echo(int argc, char **argv);
 int				builtin_exit(int argc, char **argv);
 int				builtin_setenv(int argc, char **argv);
 int				builtin_unsetenv(int argc, char **argv);
+int				builtin_printenv(int argc, char **argv);
 
 extern t_shell	*g_shell;
 

@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 19:09:16 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/22 14:20:08 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/25 18:58:20 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "ft_printf.h"
 #include <unistd.h>
 #include <sys/signal.h>
+#include <signal.h>
 #include <locale.h>
 
 extern t_shell	*g_shell;
@@ -23,6 +24,8 @@ extern t_shell	*g_shell;
 static void	sign_handler(int sign)
 {
 	(void)sign;
+	if (g_shell->curpid)
+		kill(g_shell->curpid, 1);
 }
 
 static void	initenvp(char **envp)
@@ -86,4 +89,15 @@ void		shell_end(void)
 	ft_lstdel(&g_shell->history, delhistory);
 	free(g_shell);
 	g_shell = NULL;
+}
+
+void		resetpath(void)
+{
+	char	**ptr;
+
+	if ((ptr = g_shell->paths))
+		while (*ptr)
+			free(*ptr++);
+	free(g_shell->paths);
+	g_shell->paths = ft_getpaths(g_shell->envp);
 }

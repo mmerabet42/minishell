@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 12:59:20 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/15 22:00:27 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/25 16:29:48 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	*ft_envitize(char *name, char *value)
 	return (ft_strcat(ft_strcatc(ft_strcat(res, name), '='), value));
 }
 
-int		ft_putenv(char *name, char *value, char ***envp)
+int			ft_putenv(char *name, char *value, char ***envp)
 {
 	size_t	len;
 
@@ -39,7 +39,7 @@ int		ft_putenv(char *name, char *value, char ***envp)
 	return (1);
 }
 
-char	*ft_getenv(char *name, char **envp)
+char		*ft_getenv(char *name, char **envp)
 {
 	char	*ename;
 	char	**it;
@@ -62,7 +62,7 @@ char	*ft_getenv(char *name, char **envp)
 	return (NULL);
 }
 
-int	ft_setenv(char *name, char *value, char ***envp)
+int			ft_setenv(char *name, char *value, char ***envp)
 {
 	char	*ename;
 	char	**it;
@@ -88,7 +88,7 @@ int	ft_setenv(char *name, char *value, char ***envp)
 	return (0);
 }
 
-int	ft_unsetenv(char *name, char ***envp)
+int			ft_unsetenv(char *name, char ***envp)
 {
 	char	*ename;
 	char	**envpl;
@@ -103,11 +103,8 @@ int	ft_unsetenv(char *name, char ***envp)
 	i = 0;
 	while ((*envp)[i])
 	{
-		if (ename == (*envp)[i])
-		{
+		if (ename == (*envp)[i] && !(ename = NULL))
 			free((*envp)[i]);
-			ename = NULL;
-		}
 		else
 			envpl[(ename ? i : i - 1)] = (*envp)[i];
 		++i;

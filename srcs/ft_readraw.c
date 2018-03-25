@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 18:44:03 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/15 21:15:49 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/25 21:53:55 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,6 @@ void		ft_makeraw(int setb)
 		isset = 1;
 		tcgetattr(0, &g_origt);
 		ft_memcpy(&newt, &g_origt, sizeof(struct termios));
-	/*	newt.c_iflag &= ~(IMAXBEL | IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR
-				| IGNCR | ICRNL | IXON);
-		newt.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
-		newt.c_oflag &= ~OPOST;
-		newt.c_cflag &= ~(CSIZE | PARENB);
-		newt.c_cflag &= ECHOE;
-		newt.c_cflag |= CS8;
-		newt.c_cc[VMIN] = 1;
-		newt.c_cc[VTIME] = 0;*/
 		newt.c_lflag &= ~(ICANON | ECHO | ISIG);
 		newt.c_iflag &= ~(ICRNL);
 		newt.c_cc[VMIN] = 1;
@@ -48,10 +39,10 @@ void		ft_makeraw(int setb)
 		tcsetattr((isset = 0), TCSANOW, &g_origt);
 }
 
-static void moveline(char *line, size_t *cursor, int direction, size_t size)
+static void	moveline(char *line, size_t *cursor, int direction, size_t size)
 {
 	size_t	i;
-	
+
 	if (!direction && !*cursor)
 		return ;
 	i = (direction ? ft_strlen(line) : --(*cursor));
