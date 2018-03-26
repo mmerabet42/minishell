@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:44:40 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/25 21:52:49 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/26 21:16:11 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@
 
 # define DLM_ARG " \t"
 # define DLM_INS ";>"
+# define DLM_INSL "&&:||:<<:>>"
+# define DLM_BINSL "&|<>"
 # define DLM_FARG "\"'"
-# define DLM_FARGENV "'"
-# define DLM_ALL DLM_ARG DLM_INS DLM_FARG
+# define DLM_ALL DLM_ARG DLM_INS DLM_FARG DLM_BINSL
 
 typedef enum	e_shret
 {

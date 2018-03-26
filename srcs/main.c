@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:40:09 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/25 21:52:47 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/26 21:16:08 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,16 @@ static void	ft_readline(char *line)
 	char	fullpath[1024];
 	t_args	args;
 	t_shret	shret;
+	int		pos;
 
 	ft_bzero(&args, sizeof(t_args));
 	while ((line = ft_getargs(line, &args)))
 	{
-		if (*line != '\0')
-			++line;
+		if (((pos = ft_strpbrkstr(line, DLM_INSL)) || ft_strchr(DLM_INS, *line)))
+		{
+			ft_printf("Line: '%s' %d\n", line, pos);
+			line += (pos ? pos : 1);
+		}
 		if (args.argc >= 1
 				&& ft_isbuiltin(args.argv[0], &args) == SH_NFOUND)
 		{
@@ -48,6 +52,13 @@ static void	ft_readline(char *line)
 
 int			main(int argc, char **argv, char **envp)
 {
+/*	int	pos;
+
+	if ((pos = ft_strpbrkstr(argv[1], argv[2])))
+		ft_printf("OK %d\n", pos);
+	else
+		ft_printf("KO %d\n", pos);
+	return (0);*/
 	char	line[8192];
 	int		c;
 	int		x;

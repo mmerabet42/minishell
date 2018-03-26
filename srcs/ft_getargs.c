@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 20:27:14 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/25 21:52:45 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/26 21:16:09 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char		*ft_getargs(char *cmd, t_args *args)
 		return (NULL);
 	while (*cmd && ft_strchr(DLM_ARG, *cmd))
 		++cmd;
-	while (*cmd && !ft_strchr(DLM_INS, *cmd))
+	while (*cmd && !ft_strpbrkstr(cmd, DLM_INSL) && !ft_strchr(DLM_INS, *cmd))
 	{
 		if ((str = checkarg(&cmd)))
 			args->argv = ft_memjoin_clr(args->argv,
