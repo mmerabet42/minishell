@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 18:44:03 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/25 21:53:55 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/27 15:30:28 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static void	movehistory(char c, char *line, size_t *cursor)
 		++g_shell->ihis;
 	else if (c == 'B' && g_shell->ihis > -1)
 		--g_shell->ihis;
-	ft_putstr(ft_strcpy(line, (str = ft_gethistory(g_shell->ihis))));
+	ft_putstr(ft_strcpy(line, (str = gethistory(g_shell->ihis))));
 	if (str == g_shell->cline)
 	{
 		free(g_shell->cline);

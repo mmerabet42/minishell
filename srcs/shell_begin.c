@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 19:09:16 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/25 18:58:20 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/27 15:29:32 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,6 @@ void		shell_begin(char *name, int argc, char **argv, char **envp)
 	initenvp(envp);
 }
 
-static void	delhistory(void *content, size_t content_size)
-{
-	(void)content_size;
-	free(content);
-}
-
 void		shell_end(void)
 {
 	char	**ptr;
@@ -86,7 +80,7 @@ void		shell_end(void)
 			free(*ptr++);
 	free(g_shell->envp);
 	free(g_shell->cline);
-	ft_lstdel(&g_shell->history, delhistory);
+	clearhistory();
 	free(g_shell);
 	g_shell = NULL;
 }

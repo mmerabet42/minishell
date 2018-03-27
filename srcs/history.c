@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 18:25:06 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/25 16:41:29 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/27 15:29:55 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 t_shell	*g_shell;
 
-void	ft_addhistory(char *line)
+void		addhistory(char *line)
 {
 	t_list	*lst;
 
@@ -30,7 +30,7 @@ void	ft_addhistory(char *line)
 	g_shell->history = lst;
 }
 
-char	*ft_gethistory(int i)
+char		*gethistory(int i)
 {
 	t_list	*lst;
 
@@ -39,4 +39,15 @@ char	*ft_gethistory(int i)
 	else if ((lst = ft_lstatpos(g_shell->history, i)))
 		return ((char *)lst->content);
 	return ("");
+}
+
+static void	delhistory(void *content, size_t content_size)
+{
+	(void)content_size;
+	free(content);
+}
+
+void		clearhistory(void)
+{
+	ft_lstdel(&g_shell->history, delhistory);
 }

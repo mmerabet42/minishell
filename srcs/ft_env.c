@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 12:59:20 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/25 16:29:48 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/27 18:11:43 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ char		*ft_getenv(char *name, char **envp)
 
 	if (!envp || !name || !(ename = ft_strnew(ft_strlen(name) + 2)))
 		return (NULL);
-	ft_strcat(ename, name);
-	ft_strcat(ename, "=*");
+	ft_strcat(ft_strcat(ename, name), "=*");
 	it = envp;
 	while (*it)
 	{
@@ -61,6 +60,8 @@ char		*ft_getenv(char *name, char **envp)
 	free(ename);
 	return (NULL);
 }
+
+int			g_dontfree;
 
 int			ft_setenv(char *name, char *value, char ***envp)
 {
@@ -79,7 +80,8 @@ int			ft_setenv(char *name, char *value, char ***envp)
 	{
 		if (ename == *it)
 		{
-			free(*it);
+			if (!g_dontfree)
+				free(*it);
 			*it = ft_envitize(name, value);
 			return (1);
 		}
@@ -96,16 +98,15 @@ int			ft_unsetenv(char *name, char ***envp)
 
 	if (!envp || !*envp || !name || !(ename = ft_getenv(name, *envp)))
 		return (0);
-	else if (!(envpl = (char **)malloc(sizeof(char *)
-					* (ft_tabsize(*envp)))))
+	else if (!(envpl = (char **)malloc(sizeof(char *) * (ft_tabsize(*envp)))))
 		return (0);
 	ename -= ft_strlen(name) + 1;
 	i = 0;
 	while ((*envp)[i])
 	{
-		if (ename == (*envp)[i] && !(ename = NULL))
+		if (ename == (*envp)[i] && !(ename = NULL) && !g_dontfree)
 			free((*envp)[i]);
-		else
+		else if (ename != (*envp)[i])
 			envpl[(ename ? i : i - 1)] = (*envp)[i];
 		++i;
 	}

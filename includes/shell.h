@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:44:40 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/26 21:16:11 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/27 18:22:15 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 # include "ft_list.h"
 
 # define DLM_ARG " \t"
-# define DLM_INS ";>"
+# define DLM_FARG "\"'"
+# define DLM_INS ";<>|&"
 # define DLM_INSL "&&:||:<<:>>"
 # define DLM_BINSL "&|<>"
-# define DLM_FARG "\"'"
 # define DLM_ALL DLM_ARG DLM_INS DLM_FARG DLM_BINSL
 
 typedef enum	e_shret
@@ -102,8 +102,9 @@ char			*ft_strshret(t_shret shret);
 void			shell_begin(char *name, int argc, char **argv, char **envp);
 void			shell_end(void);
 
-void			ft_addhistory(char *line);
-char			*ft_gethistory(int i);
+void			addhistory(char *line);
+char			*gethistory(int i);
+void			clearhistory(void);
 
 int				ft_exec(char *filename, char **argv, char **envp);
 void			ft_exit(int code, const char *msg);
@@ -120,7 +121,9 @@ int				builtin_exit(int argc, char **argv);
 int				builtin_setenv(int argc, char **argv);
 int				builtin_unsetenv(int argc, char **argv);
 int				builtin_printenv(int argc, char **argv);
+int				builtin_history(int argc, char **argv);
 
+extern int		g_dontfree;
 extern t_shell	*g_shell;
 
 #endif

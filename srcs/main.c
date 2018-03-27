@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:40:09 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/26 21:16:08 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/27 18:22:13 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include "shell.h"
 #include "ft_types.h"
 #include <unistd.h>
-#include <locale.h>
 
 t_shell	*g_shell;
 
@@ -28,13 +27,11 @@ static void	ft_readline(char *line)
 	int		pos;
 
 	ft_bzero(&args, sizeof(t_args));
-	while ((line = ft_getargs(line, &args)))
+	while ((line = ft_getargs(line, &args)) && g_shell->running)
 	{
-		if (((pos = ft_strpbrkstr(line, DLM_INSL)) || ft_strchr(DLM_INS, *line)))
-		{
-			ft_printf("Line: '%s' %d\n", line, pos);
+		if (((pos = ft_strpbrkstr(line, DLM_INSL))
+					|| ft_strchr(DLM_INS, *line)))
 			line += (pos ? pos : 1);
-		}
 		if (args.argc >= 1
 				&& ft_isbuiltin(args.argv[0], &args) == SH_NFOUND)
 		{
@@ -52,19 +49,13 @@ static void	ft_readline(char *line)
 
 int			main(int argc, char **argv, char **envp)
 {
-/*	int	pos;
-
-	if ((pos = ft_strpbrkstr(argv[1], argv[2])))
-		ft_printf("OK %d\n", pos);
-	else
-		ft_printf("KO %d\n", pos);
-	return (0);*/
 	char	line[8192];
 	int		c;
 	int		x;
 
 	shell_begin("minishell", argc, argv, envp);
 	ft_bzero(line, 8192);
+	c = 0;
 	while (g_shell->running)
 	{
 		ft_getcursor(&x, NULL);
@@ -75,10 +66,11 @@ int			main(int argc, char **argv, char **envp)
 		ft_strclr(line);
 		if ((c = ft_readraw(line, 8192)))
 		{
+			if (c != 3 && (c != 4 || (c == 4 && ft_strcpy(ft_bzero(line,
+									ft_strlen(line)), "exit"))))
+				ft_readline(line);
 			if (c != 3 && c != 4)
-				ft_addhistory(line);
-			if (c != 3 && line[0])
-				ft_readline(c == 4 ? "exit" : line);
+				addhistory(line);
 		}
 	}
 	ft_makeraw(0);

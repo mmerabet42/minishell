@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 19:09:06 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/25 21:17:59 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/27 15:21:02 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 static t_builtin	g_builtins[] = {
 	{"cd", builtin_cd}, {"echo", builtin_echo}, {"setenv", builtin_setenv},
 	{"unsetenv", builtin_unsetenv}, {"env", builtin_env},
-	{"exit", builtin_exit}, {"printenv", builtin_printenv}
+	{"exit", builtin_exit}, {"printenv", builtin_printenv},
+	{"history", builtin_history}
 };
 
 static size_t		g_builtins_size = sizeof(g_builtins) / sizeof(t_builtin);
