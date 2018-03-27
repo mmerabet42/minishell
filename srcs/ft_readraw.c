@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 18:44:03 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/27 15:30:28 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/27 21:04:26 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,22 @@ static void	movecursor(char *line, size_t *cursor)
 {
 	int	c;
 
-	ft_getch();
-	if ((c = ft_getch()) == 'D' && *cursor != 0)
-		ft_printf("\033[1D", --(*cursor));
-	else if (c == 'C' && *cursor < ft_strlen(line))
-		ft_printf("\033[1C", ++(*cursor));
-	else if ((c == 'A' || c == 'B') && g_shell->history)
-		movehistory(c, line, cursor);
+	if ((c = ft_getch()) != '[')
+	{
+		if (c == 'D' && *cursor != 0)
+		{
+			
+		}
+	}
+	else
+	{
+		if ((c = ft_getch()) == 'D' && *cursor != 0)
+			ft_printf("\033[1D", --(*cursor));
+		else if (c == 'C' && *cursor < ft_strlen(line))
+			ft_printf("\033[1C", ++(*cursor));
+		else if ((c == 'A' || c == 'B') && g_shell->history)
+			movehistory(c, line, cursor);
+	}
 }
 
 int			ft_readraw(char *line, size_t size)

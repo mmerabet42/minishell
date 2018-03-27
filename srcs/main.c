@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:40:09 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/27 18:22:13 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/27 21:04:27 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,7 @@ int			main(int argc, char **argv, char **envp)
 			ft_printf("%#{lgrey}%{bold/;0;0;0}%%%{0}\n");
 		ft_printf("%{0}%S %{lred}%s %{lcyan}%s%{0} %{bold}%S%{0} ", L"㋜",
 				g_shell->user, g_shell->pwd, L"∴");
-		ft_strclr(line);
-		if ((c = ft_readraw(line, 8192)))
+		if ((c = ft_readraw(ft_strclr(line), 8192)))
 		{
 			if (c != 3 && (c != 4 || (c == 4 && ft_strcpy(ft_bzero(line,
 									ft_strlen(line)), "exit"))))
