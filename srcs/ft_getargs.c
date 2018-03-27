@@ -39,7 +39,7 @@ static char	*ctilde(int pos, char *homepwd, char **cmd)
 
 static char	*goenv(char *tld)
 {
-	size_t	di;
+	int		di;
 	char	*dptr;
 
 	if ((di = ft_strchr_pos(tld, '$')) != -1)
@@ -106,8 +106,9 @@ void		ft_delargs(t_args *args)
 	if (!args)
 		return ;
 	i = 0;
-	while (i < args->argc)
-		free(args->argv[i++]);
+	if (args->argv)
+		while (i < args->argc)
+			free(args->argv[i++]);
 	free(args->argv);
 	ft_bzero(args, sizeof(t_args));
 }
