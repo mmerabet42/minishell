@@ -86,22 +86,12 @@ static void	movecursor(char *line, size_t *cursor)
 {
 	int	c;
 
-	if ((c = ft_getch()) != '[')
-	{
-		if (c == 'D' && *cursor != 0)
-		{
-			
-		}
-	}
-	else
-	{
-		if ((c = ft_getch()) == 'D' && *cursor != 0)
-			ft_printf("\033[1D", --(*cursor));
-		else if (c == 'C' && *cursor < ft_strlen(line))
-			ft_printf("\033[1C", ++(*cursor));
-		else if ((c == 'A' || c == 'B') && g_shell->history)
-			movehistory(c, line, cursor);
-	}
+	if ((c = ft_getch()) == 'D' && *cursor != 0)
+		ft_printf("\033[1D", --(*cursor));
+	else if (c == 'C' && *cursor < ft_strlen(line))
+		ft_printf("\033[1C", ++(*cursor));
+	else if ((c == 'A' || c == 'B') && g_shell->history)
+		movehistory(c, line, cursor);
 }
 
 int			ft_readraw(char *line, size_t size)
