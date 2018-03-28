@@ -47,22 +47,28 @@ static void	ft_readline(char *line)
 	}
 }
 
+static void	printprompt(void)
+{
+	int	x;
+	
+	ft_getcursor(&x, NULL);
+	if (x > 1)
+		ft_printf("%#{lgrey}%{bold/;0;0;0}%%%{0}\n");
+	ft_printf("%{0}%S %{lred}%s %{lcyan}%s%{0} %{bold}%S%{0} ", L"㋜",
+		g_shell->user, g_shell->pwd, L"∴");
+}
+
 int			main(int argc, char **argv, char **envp)
 {
 	char	line[8192];
 	int		c;
-	int		x;
 
 	shell_begin("minishell", argc, argv, envp);
 	ft_bzero(line, 8192);
 	c = 0;
 	while (g_shell->running)
 	{
-		ft_getcursor(&x, NULL);
-		if (x > 1)
-			ft_printf("%#{lgrey}%{bold/;0;0;0}%%%{0}\n");
-		ft_printf("%{0}%S %{lred}%s %{lcyan}%s%{0} %{bold}%S%{0} ", L"㋜",
-				g_shell->user, g_shell->pwd, L"∴");
+		printprompt();
 		if ((c = ft_readraw(ft_strclr(line), 8192)))
 		{
 			if (c != 3 && (c != 4 || (c == 4 && ft_strcpy(ft_bzero(line,
