@@ -2,7 +2,7 @@
 
 int main()
 {
-	printf("OK\n");
+	printf("KO\n");
 	return (0);
 /*	char	**args;
 	int	ret;

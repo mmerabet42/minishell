@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/15 18:03:23 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/27 17:40:21 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/29 14:00:03 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ t_shret	ft_chdir(char *name)
 	acc = SH_NFOUND;
 	if (!name || (acc = ft_access(name, R_OK)) != SH_OK)
 		return (acc);
-	else
-		chdir(name);
+	else if (chdir(name) == -1)
+		return (SH_NOTDIR);
 	return (SH_OK);
 }
 

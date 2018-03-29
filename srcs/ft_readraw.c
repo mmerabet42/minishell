@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 18:44:03 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/27 21:04:26 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/29 14:59:12 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ static void	moveline(char *line, size_t *cursor, int direction, size_t size)
 static void	movehistory(char c, char *line, size_t *cursor)
 {
 	char	*str;
+	char	*tmp;
 
 	if (*cursor > 0)
 		ft_printf("\033[%dD\033[K", *cursor);
@@ -73,7 +74,9 @@ static void	movehistory(char c, char *line, size_t *cursor)
 		++g_shell->ihis;
 	else if (c == 'B' && g_shell->ihis > -1)
 		--g_shell->ihis;
-	ft_putstr(ft_strcpy(line, (str = gethistory(g_shell->ihis))));
+	ft_strcpy(line, (str = gethistory(g_shell->ihis)));
+	ft_putstr((tmp = ft_strrep(line, '\t', ' ')));
+	free(tmp);
 	if (str == g_shell->cline)
 	{
 		free(g_shell->cline);
@@ -86,6 +89,7 @@ static void	movecursor(char *line, size_t *cursor)
 {
 	int	c;
 
+	ft_getch();
 	if ((c = ft_getch()) == 'D' && *cursor != 0)
 		ft_printf("\033[1D", --(*cursor));
 	else if (c == 'C' && *cursor < ft_strlen(line))
@@ -111,7 +115,7 @@ int			ft_readraw(char *line, size_t size)
 			movecursor(line, &cursor);
 		else
 		{
-			ft_putchar((char)c);
+			ft_putchar(c == '\t' ? ' ' : (char)c);
 			if (line[cursor] != '\0')
 				moveline(line, &cursor, 1, size);
 			line[cursor++] = (char)c;

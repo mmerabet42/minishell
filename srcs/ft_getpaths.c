@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 19:09:27 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/25 19:27:12 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/29 13:45:13 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,7 @@ char	*ft_strshret(t_shret shret)
 		return ("command not found");
 	else if (shret == SH_NEXIST)
 		return ("no such file or directory");
+	else if (shret == SH_NOTDIR)
+		return ("not a directory");
 	return ("none");
 }

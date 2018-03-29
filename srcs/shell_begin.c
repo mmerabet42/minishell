@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 19:09:16 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/27 15:29:32 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/29 15:54:49 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void		shell_begin(char *name, int argc, char **argv, char **envp)
 	if (!(g_shell = (t_shell *)ft_memalloc(sizeof(t_shell))))
 		ft_exit(EXIT_FAILURE, "Failed to begin shell. Exiting");
 	if (!(g_shell->paths = ft_getpaths(envp)))
-		return ;
+		;
 	setlocale(LC_ALL, "");
 	g_shell->name = name;
 	g_shell->running = 1;

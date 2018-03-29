@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 20:27:14 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/27 20:40:36 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/29 16:02:10 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "ft_mem.h"
 #include "ft_printf.h"
 
-t_shell	*g_shell;
+extern t_shell	*g_shell;
 
 static char	*ctilde(int pos, char *homepwd, char **cmd)
 {
