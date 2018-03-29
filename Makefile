@@ -6,7 +6,7 @@
 #    By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/11 18:07:15 by mmerabet          #+#    #+#              #
-#    Updated: 2018/03/29 15:51:32 by mmerabet         ###   ########.fr        #
+#    Updated: 2018/03/29 17:32:43 by mmerabet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ CEND=\033[0m
 
 all: lib $(NAME)
 
-$(NAME): includes/shell.h $(LIBFT) $(OBJB)
+$(NAME): $(LIBFT) $(OBJB)
 	@printf "\r\033[K$(CGREEN)Creating executable$(CEND): $(NAME)\n"
 	@$(CC) $(CFLAGS) $(OBJB) $(LIBFT) $(FRAMEWORKS) -o $(NAME)
 	@echo  "$(NAME): $(CGREEN)done$(CEND)"
@@ -51,7 +51,7 @@ $(NAME): includes/shell.h $(LIBFT) $(OBJB)
 lib:
 	@make -C $(LIBFTD)
 
-$(OBJD)%.o: $(SRCD)%.c
+$(OBJD)%.o: $(SRCD)%.c includes/shell.h
 	@printf "\r\033[K$(CGREEN)Compiling$(CEND): $@"
 	@mkdir -p $(OBJD)
 	@$(CC) $(CFLAGS) -o $@ -c $< $(ICLD)

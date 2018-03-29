@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:44:40 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/29 16:21:42 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/29 17:00:06 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct	s_shell
 	char		*cline;
 	t_builtin	*builtins;
 	pid_t		curpid;
+	int			exitcode;
 }				t_shell;
 
 typedef struct	s_opt
@@ -102,7 +103,7 @@ t_shret			ft_getfullpath(char *fname,
 char			*ft_strshret(t_shret shret);
 
 void			shell_begin(char *name, int argc, char **argv, char **envp);
-void			shell_end(void);
+int				shell_end(void);
 
 void			addhistory(char *line);
 char			*gethistory(int i);

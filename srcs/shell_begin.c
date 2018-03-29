@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 19:09:16 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/29 15:54:49 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/29 17:37:13 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "ft_str.h"
 #include "ft_mem.h"
 #include "ft_printf.h"
+#include "ft_types.h"
 #include <unistd.h>
 #include <sys/signal.h>
 #include <signal.h>
@@ -51,25 +52,32 @@ static void	initenvp(char **envp)
 
 void		shell_begin(char *name, int argc, char **argv, char **envp)
 {
+	char	*shlvl;
+
 	(void)argc;
 	(void)argv;
 	if (signal(SIGINT, sign_handler) == SIG_ERR)
 		ft_exit(EXIT_FAILURE, "Failed to catch 'SIGINT' signal. Exiting.");
 	if (!(g_shell = (t_shell *)ft_memalloc(sizeof(t_shell))))
 		ft_exit(EXIT_FAILURE, "Failed to begin shell. Exiting");
-	if (!(g_shell->paths = ft_getpaths(envp)))
-		;
+	g_shell->paths = ft_getpaths(envp);
 	setlocale(LC_ALL, "");
 	g_shell->name = name;
 	g_shell->running = 1;
 	g_shell->ihis = -1;
+	g_shell->exitcode = 0;
 	ft_getcwd(g_shell->pwd, 2048);
 	initenvp(envp);
+	ft_setenv("SHLVL",
+			(shlvl = ft_itoa(ft_atoi(ft_getenv("SHLVL", g_shell->envp)) + 1)),
+			&g_shell->envp);
+	free(shlvl);
 }
 
-void		shell_end(void)
+int			shell_end(void)
 {
 	char	**ptr;
+	int		exitcode;
 
 	if ((ptr = g_shell->paths))
 		while (*ptr)
@@ -81,8 +89,10 @@ void		shell_end(void)
 	free(g_shell->envp);
 	free(g_shell->cline);
 	clearhistory();
+	exitcode = g_shell->exitcode;
 	free(g_shell);
 	g_shell = NULL;
+	return (exitcode);
 }
 
 void		resetpath(void)

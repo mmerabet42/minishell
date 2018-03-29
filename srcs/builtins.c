@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 19:29:29 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/27 18:22:12 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/29 17:00:04 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 #include "ft_io.h"
 #include "ft_str.h"
 #include "ft_mem.h"
+#include "ft_types.h"
 #include "ft_printf.h"
 
 int	builtin_exit(int argc, char **argv)
 {
-	(void)argc;
-	(void)argv;
+	if (argc > 1)
+		g_shell->exitcode = ft_atoi(argv[1]);
 	g_shell->running = 0;
 	return (0);
 }

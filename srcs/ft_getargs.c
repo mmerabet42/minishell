@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 20:27:14 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/29 16:21:44 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/29 16:59:18 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char	*ctilde(int pos, char *homepwd, char **cmd)
 
 	if (!(str = (pos == -1 ? ft_strdupl(*cmd) : ft_strndupl(*cmd, pos))))
 		return (NULL);
-	if (str[0] == '~' && str[1] != '~')
+	if (str[0] == '~' && str[1] != '~' && homepwd)
 	{
 		if ((cstr = ft_strjoin(homepwd, str + 1)))
 		{

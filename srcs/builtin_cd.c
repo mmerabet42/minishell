@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/15 18:03:23 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/29 14:00:03 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/29 17:02:16 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "ft_printf.h"
 #include <unistd.h>
 
-t_shret	ft_chdir(char *name)
+t_shret		ft_chdir(char *name)
 {
 	t_shret	acc;
 
@@ -28,16 +28,32 @@ t_shret	ft_chdir(char *name)
 	return (SH_OK);
 }
 
-int		builtin_cd(int argc, char **argv)
+static int	gohome(char **argv)
+{
+	t_shret	acc;
+
+	if (!g_shell->homepwd)
+	{
+		ft_printf("%s: HOME not set\n", argv[0]);
+		return (1);
+	}
+	else if ((acc = ft_chdir(g_shell->homepwd)) != SH_OK)
+	{
+		ft_printf("%s: %s: %s\n", argv[0], ft_strshret(acc), g_shell->homepwd);
+		return (1);
+	}
+	return (0);
+}
+
+int			builtin_cd(int argc, char **argv)
 {
 	t_shret	acc;
 	char	*name;
 
 	if (argc == 1)
 	{
-		if ((acc = ft_chdir(g_shell->homepwd)) != SH_OK)
-			return (ft_printf("%s: %s: %s\n", argv[0], ft_strshret(acc),
-						g_shell->homepwd) ? 1 : 1);
+		if (gohome(argv))
+			return (1);
 	}
 	else if (argc > 1)
 	{
@@ -45,8 +61,8 @@ int		builtin_cd(int argc, char **argv)
 			name = ft_getenv("OLDPWD", g_shell->envp);
 		if ((acc = ft_chdir(name)) != SH_OK)
 		{
-			return (ft_printf("%s: %s: %s\n", argv[0],
-						ft_strshret(acc), name) ? 1 : 1);
+			return (ft_printf("%s: %s: %s\n",
+						argv[0], ft_strshret(acc), name) ? 1 : 1);
 		}
 		if (!ft_strcmp(argv[1], "-"))
 			ft_printf("%s\n", name);
