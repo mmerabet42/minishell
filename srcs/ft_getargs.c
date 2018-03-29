@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 20:27:14 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/29 16:02:10 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/29 16:21:44 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static char	*checkarg(char **cmd)
 		tld = ctilde(ft_strpbrkl_pos(*cmd, DLM_ALL), g_shell->homepwd, cmd);
 		str = ft_strjoin_clr(str, goenv(tld), 2);
 	}
-	if (!ft_strchr(DLM_ARG DLM_INS, **cmd))
+	if (!ft_strchr(DLM_ALLT, **cmd))
 		return (NULL);
 	tld = str;
 	str = NULL;

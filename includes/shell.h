@@ -6,7 +6,7 @@
 /*   By: mmerabet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 18:44:40 by mmerabet          #+#    #+#             */
-/*   Updated: 2018/03/29 15:54:50 by mmerabet         ###   ########.fr       */
+/*   Updated: 2018/03/29 16:21:42 by mmerabet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # define DLM_ARG " \t"
 # define DLM_FARG "\"'"
 # define DLM_INS ";<>|&"
+# define DLM_ALLT DLM_ARG DLM_INS
 # define DLM_INSL "&&:||:<<:>>"
 # define DLM_BINSL "&|<>"
 # define DLM_ALL DLM_ARG DLM_INS DLM_FARG DLM_BINSL
